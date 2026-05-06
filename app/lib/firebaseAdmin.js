@@ -3,7 +3,7 @@
  * Uses REST API to interface with the database.
  */
 
-const DB_URL = 'https://kslcaptain-default-rtdb.firebaseio.com';
+const DB_URL = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
 
 async function dbGet(path) {
   const res = await fetch(`${DB_URL}/${path}.json`);

@@ -1,0 +1,3 @@
+{
+  "/api/groups/[groupId]/payments/route": "app/api/groups/[groupId]/payments/route.js"
+}

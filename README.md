@@ -1,47 +1,42 @@
 # E-Split
 
-E-Split is a web application built for students and roommates to easily share expenses and manage money. When you travel in a group or live together, it is very hard to calculate exactly who owes who. E-Split solves this problem by doing all the math automatically and telling you exactly how to settle debts.
+E-Split is a web application built for students and friends to easily manage shared expenses. The unique thing about this project is that it is built completely inside a fake digital wallet system. It handles the math of group expenses and also processes the simulated payments between friends live.
 
-## How It Works (Step-by-Step Workflow)
+## How The Full Process Works
 
-This is the full process of how the application works from start to finish:
+Here is the complete step-by-step process of how this project works from start to finish:
 
-1. **Sign Up & Profile Creation:** 
-   When a user signs up using their email or Google account, the app automatically generates a unique `@username` for them. They are given a starting digital wallet balance so they can test the application.
+1. **Sign In & Fake Digital Wallet:** 
+   When a user signs into the app for the first time, they are automatically given an initial balance of 20,000 in their fake digital wallet to test the app. 
 
-2. **Connecting with Friends:** 
-   Before sharing expenses, users must connect with each other. A user searches for their friend's `@username` and sends a connection request. Once accepted, they become friends.
+2. **Unique Usernames & Connecting:** 
+   After signing in, the system automatically creates a unique `@username` for the user. To start sharing expenses, users must search for their friends using these usernames and connect with them.
 
-3. **Creating a Group (E-Split):** 
-   If a group of friends goes on a trip, one person creates a new "E-Split" group (for example: "Pokhara Trip") and adds their connected friends to this group.
+3. **Creating a Group:** 
+   Users can create a specific group for an event, like a "Road Trip". Once the group is created, the user can add their connected friends into this group.
 
 4. **Adding Expenses:** 
-   During the trip, whenever someone pays for something (like a taxi or lunch), they log it in the group as an expense. The app takes that amount and automatically splits it equally among all members.
+   During the trip, if a person pays for something (like hotel rent), they can add that expense to the group. The app automatically calculates how much each person in the group needs to pay for their share.
 
-5. **Automatic Debt Calculation:** 
-   As more expenses are added, the app keeps a running total. It uses a mathematical algorithm to simplify the debts. Instead of everyone paying each other in a messy way, the app finds the minimum number of transactions needed so everyone gets their money back.
+5. **Direct Payments:** 
+   Instead of just adding expenses, users can also make direct payments through the dashboard if they pay for something on behalf of the group using an external method (like a real bank transfer or QR code).
 
-6. **Final Settlement:** 
-   At the end of the trip, users check the "Balances" tab. The app tells them exactly who they need to pay. Users click the "Pay Now" or "Settle All" button, and the money is securely transferred from their internal digital wallet to their friend's wallet. 
+6. **Live Dashboard & Calculations:** 
+   Everything in this app is completely live. If someone adds an expense, it is automatically calculated and shown to everyone in the group instantly. Every person's dashboard will update live to show exactly who owes how much money. 
 
-## Features
-
-- **Group Management:** Make specific groups for specific events.
-- **Internal Digital Wallet:** Simulated digital wallet to securely process the payments between friends.
-- **QR Payment Scanner:** A simulated QR code scanner to log payments made outside the app (like paying a shop directly via eSewa or bank).
-- **Real-Time Data:** If someone adds an expense on their phone, it instantly appears on your screen. You do not need to refresh the page.
-- **Activity Feed:** See a full history of every single expense added and every payment made.
+7. **Final Settlement:** 
+   When the trip is over, users can look at their dashboard to see their final debts. Because they have the fake digital wallet with their initial 20,000 money, they can simply click a button to "settle up", and the fake money is instantly transferred from their wallet to their friend's wallet to clear the debt.
 
 ## Technologies Used
 
 - **Frontend:** Next.js (React) for the user interface.
-- **Backend:** Next.js API Routes for handling server logic securely.
-- **Database:** Firebase Realtime Database for instant data syncing.
+- **Backend:** Next.js API Routes for handling server logic.
+- **Database:** Firebase Realtime Database for the instant live data syncing.
 - **Authentication:** Firebase Authentication (Email/Password and Google Login).
 - **Styling:** Custom CSS.
 
 ## Code Structure
 
-- `app/api/`: Contains the secure server routes. When you add an expense or settle a debt, the frontend sends a request here. The server validates if you have enough money in your wallet before saving it to the database.
-- `app/components/`: Contains all the visual parts of the app. For example, `ESplit.js` handles the group pages, and `Dashboard.js` handles the main screen.
-- `app/lib/`: Contains `calculations.js`, which holds the core mathematical logic that simplifies the group debts.
+- `app/api/`: Contains the server routes. When you add an expense or settle a debt, the server checks if you have enough money in your fake wallet before saving it to the database.
+- `app/components/`: Contains all the visual parts of the app, like the Dashboard, the Group pages, and the Wallet UI.
+- `app/lib/`: Contains `calculations.js`, which does all the heavy math to simplify the debts and figure out exactly who needs to pay who.

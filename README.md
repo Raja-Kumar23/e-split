@@ -1,54 +1,42 @@
 # E-Split
 
-A modern web application built with Next.js for social expense sharing. E-Split helps groups of friends, roommates, and travelers track shared expenses, compute the minimum number of transactions needed to settle debts, and manage payments easily.
+A modern web application built with Next.js for social expense sharing. E-Split helps groups of friends, roommates, and travelers track shared expenses, compute the minimum number of transactions needed to settle debts, and manage payments effortlessly.
 
-## Features
+## What is this project?
 
-- **Group Expense Tracking:** Create shared groups (e.g., Road Trips, House Rent) and log expenses.
-- **Advanced Debt Splitting:** Automatically calculates "who owes whom" and minimizes total transactions needed to settle up using an optimized algorithm.
-- **Connections & Friends:** Connect with users using their unique `@username` identifiers.
-- **Digital Wallets & Payments:** Simulated internal wallet system with real-time balance tracking. 
-- **Real-time Synchronization:** Built on Firebase Realtime Database for instant updates across devices.
-- **Activity Feed & Notifications:** Comprehensive dashboard detailing recent activities, pending requests, and collection summaries.
-- **Mobile-Responsive Design:** Tailored with a responsive bottom navigation for seamless usage on mobile devices.
+E-Split was designed to solve the common problem of tracking shared costs and figuring out exactly who owes whom after a trip or shared event. Instead of manually calculating individual debts, E-Split provides an automated financial engine that balances the books.
+
+It features a simulated internal wallet system, allowing users to "record" direct payments via external means (like bank transfers or eSewa) or settle debts directly through their E-Split digital balance. The entire platform is real-time, meaning changes reflect instantly across all connected devices.
+
+## Core Features
+
+- **Group Expense Tracking:** Create dedicated spaces (e.g., "Pokhara Trip", "Apartment Rent") and log shared costs.
+- **Advanced Debt Splitting:** Automatically calculates "who owes whom" and minimizes total transactions needed to settle up using an optimized debt simplification algorithm.
+- **Connections & Friends:** Find and add friends using a unique, auto-generated `@username` system.
+- **Digital Wallets & Payments:** Simulated internal wallet system to handle settlements seamlessly. 
+- **Real-time Synchronization:** Built on Firebase Realtime Database for instant updates across devices without needing to refresh.
+- **Activity Feed & Dashboard:** A comprehensive dashboard detailing recent activities, pending connection requests, and collection summaries.
 
 ## Tech Stack
 
 - **Framework:** Next.js (App Router)
-- **Database & Auth:** Firebase Realtime Database and Firebase Authentication
-- **Styling:** CSS Modules / Global CSS variables
-- **Hosting/Deployment:** Vercel (or any Node.js hosting)
+- **Database & Authentication:** Firebase Realtime Database and Firebase Auth
+- **Styling:** CSS Modules / Vanilla Global CSS Variables
+- **Architecture:** Client-side React components interacting with server-side API routes.
 
-## Getting Started
+## Code Structure
 
-First, install the dependencies:
+The application follows a clean separation of concerns, structured primarily into three directories:
 
-```bash
-npm install
-```
+- **`app/api/` (Server API)**
+  Contains the backend logic. Routes handle secure interactions with Firebase Admin, ensuring that transactions (like adding expenses or settling debts) are validated on the server before mutating the database.
+  
+- **`app/components/` (Frontend UI)**
+  Contains all modular React components.
+  - `AppShell.js`: The core layout wrapper that manages global real-time Firebase listeners and synchronizes state (Groups, Connections, Requests) across all child views.
+  - `ESplit.js`: The main interface for managing groups, recording expenses, and viewing the optimal settlement plan.
+  - `Dashboard.js`: Aggregates the user's financial overview and chronological activity feed.
 
-Create a `.env.local` file in the root directory and add your Firebase credentials:
-
-```bash
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=your_database_url
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
-
-## Project Structure
-
-- `app/api`: Server-side API routes handling transactions, groups, and connections.
-- `app/components`: Reusable React components including the Dashboard, Profile, Connections, and E-Split modals.
-- `app/lib`: Helper functions for Firebase configuration and core financial calculations.
+- **`app/lib/` (Core Logic & Utilities)**
+  - `calculations.js`: The central financial engine. It houses the algorithms that calculate net balances, individual debts, and the optimal transaction plan to minimize the number of required settlements.
+  - `firebase.js` & `firebaseAdmin.js`: Client and Server Firebase configuration modules.

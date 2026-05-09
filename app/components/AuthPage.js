@@ -114,7 +114,7 @@ export default function AuthPage() {
           </div>
           {tab === 'login' ? (
             <div>
-              <div className="fgroup"><label>Email</label><input type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="student@university.edu" onKeyDown={e => e.key === 'Enter' && handleLogin()} /></div>
+              <div className="fgroup"><label>Email</label><input type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="sahrajakumar885@gail.com" onKeyDown={e => e.key === 'Enter' && handleLogin()} /></div>
               <div className="fgroup"><label>Password</label><input type="password" value={loginPass} onChange={e => setLoginPass(e.target.value)} placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleLogin()} /></div>
               {loginErr && <div className="auth-err">{loginErr}</div>}
               <button className="btn-auth" style={{ marginTop: loginErr ? 10 : 0 }} onClick={handleLogin}>Sign In →</button>

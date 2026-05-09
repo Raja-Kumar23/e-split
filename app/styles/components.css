@@ -1,0 +1,259 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.card-lg {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+/* ── Badges ── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.badge-green { background: var(--green-dim); color: var(--green); }
+.badge-red   { background: var(--red-dim);   color: var(--red);   }
+.badge-blue  { background: var(--blue-dim);  color: var(--blue);  }
+.badge-gold  { background: var(--gold-dim);  color: var(--gold);  }
+.badge-gray  { background: var(--surface3);  color: var(--text3); }
+
+/* ── Section headers ── */
+
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.2px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* ── Buttons ── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px 16px;
+  border-radius: var(--r-sm);
+  border: none;
+  cursor: pointer;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #e8a020, #c8861a);
+  color: #000;
+}
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(200, 134, 26, 0.35);
+}
+
+.btn-ghost {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  border-color: var(--border2);
+  color: var(--text);
+}
+
+.btn-danger {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(204, 62, 62, 0.18);
+}
+.btn-danger:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 5px 11px;
+  font-size: 10px;
+}
+
+.btn-success {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(13, 158, 78, 0.2);
+}
+.btn-success:hover {
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-blue {
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid rgba(61, 111, 240, 0.2);
+}
+.btn-blue:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+.btn-collect {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(13, 158, 78, 0.2);
+}
+.btn-collect:hover {
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-row {
+  display: flex;
+  gap: 7px;
+  margin-top: 4px;
+}
+
+/* ── Form groups ── */
+
+.fgrp {
+  margin-bottom: 12px;
+}
+
+.fgrp label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text3);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.fgrp input,
+.fgrp select,
+.fgrp textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border2);
+  border-radius: var(--r-sm);
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface2);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.fgrp input:focus,
+.fgrp select:focus,
+.fgrp textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+}
+
+.fgrp input::placeholder,
+.fgrp textarea::placeholder {
+  color: var(--text3);
+}
+
+.fgrp select {
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ── Empty states ── */
+
+.empty {
+  text-align: center;
+  padding: 36px 20px;
+  color: var(--text3);
+}
+
+.empty-icon {
+  font-size: 26px;
+  margin-bottom: 7px;
+}
+
+.empty-sub {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ── Toasts ── */
+
+.toast-container {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toast {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 10px 15px;
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error   { border-left: 3px solid var(--red);   }
+.toast.info    { border-left: 3px solid var(--gold);  }
+
+/* ── Value colours ── */
+
+.pos { color: var(--green); }
+.neg { color: var(--red);   }

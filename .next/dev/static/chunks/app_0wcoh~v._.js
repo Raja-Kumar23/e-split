@@ -41,8 +41,8 @@ function ToastProvider({ children }) {
         }
     }["ToastProvider.useCallback[showToast]"], []);
     const icons = {
-        success: '✅',
-        error: '❌',
+        success: '',
+        error: '',
         info: 'ℹ️'
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ToastCtx.Provider, {
@@ -108,24 +108,28 @@ __turbopack_context__.s([
     "db",
     ()=>db
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/app/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@firebase/app/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$auth$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/auth/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$esm$2f$index$2d$568d0403$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__p__as__getAuth$3e$__ = __turbopack_context__.i("[project]/node_modules/@firebase/auth/dist/esm/index-568d0403.js [app-client] (ecmascript) <export p as getAuth>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$database$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/firebase/database/dist/esm/index.esm.js [app-client] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@firebase/database/dist/index.esm.js [app-client] (ecmascript)");
-'use client';
+/**
+ * Firebase Client Initialization.
+ * Ensures a single Firebase app instance is created and provides auth/db exports.
+ */ 'use client';
 ;
 ;
 ;
 const firebaseConfig = {
-    apiKey: 'AIzaSyDuYkJ6kz0W7UfVfE8MB5uV-yBLfD7a2uo',
-    authDomain: 'kslcaptain.firebaseapp.com',
-    databaseURL: 'https://kslcaptain-default-rtdb.firebaseio.com',
-    projectId: 'kslcaptain',
-    storageBucket: 'kslcaptain.firebasestorage.app',
-    messagingSenderId: '975351727139',
-    appId: '1:975351727139:web:a353c7a8c992b6fcfb5d96'
+    apiKey: ("TURBOPACK compile-time value", "AIzaSyDuYkJ6kz0W7UfVfE8MB5uV-yBLfD7a2uo"),
+    authDomain: ("TURBOPACK compile-time value", "kslcaptain.firebaseapp.com"),
+    databaseURL: ("TURBOPACK compile-time value", "https://kslcaptain-default-rtdb.firebaseio.com"),
+    projectId: ("TURBOPACK compile-time value", "kslcaptain"),
+    storageBucket: ("TURBOPACK compile-time value", "kslcaptain.firebasestorage.app"),
+    messagingSenderId: ("TURBOPACK compile-time value", "975351727139"),
+    appId: ("TURBOPACK compile-time value", "1:975351727139:web:a353c7a8c992b6fcfb5d96")
 };
 const app = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getApps"])().length === 0 ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["initializeApp"])(firebaseConfig) : (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$app$2f$dist$2f$esm$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["getApps"])()[0];
 const auth = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$esm$2f$index$2d$568d0403$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__p__as__getAuth$3e$__["getAuth"])(app);
@@ -138,16 +142,9 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "use strict";
 
 /**
- * E-Split Calculation Engine
- * All money math is centralised here. Used on both server (API routes)
- * and client (display components).
- *
- * PRINCIPLE
- *  - Every expense has a payer (paidBy) and a list of participants (splitWith).
- *  - The payer fronted the full amount; each participant (including the payer)
- *    owes their equal share.
- *  - Net balance: POSITIVE = others owe you | NEGATIVE = you owe others
- *  - Payments recorded in the `payments` node reduce outstanding balances.
+ * Core Financial Calculation Engine.
+ * Manages expense splitting, balance computation, and settlement algorithms.
+ * Used consistently across server routes and client components.
  */ __turbopack_context__.s([
     "AVATAR_COLORS",
     ()=>AVATAR_COLORS,
@@ -199,11 +196,7 @@ const generateUsername = (name)=>{
     const clean = (name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '');
     return (clean.slice(0, 8) || 'user') + Math.floor(100 + Math.random() * 900);
 };
-// ─── core balance calculations ──────────────────────────────────────────────
-/**
- * Resolve the participant list for one expense.
- * Falls back to all group members when splitWith is empty/missing.
- */ function resolveParticipants(exp, allMemberUids) {
+function resolveParticipants(exp, allMemberUids) {
     if (Array.isArray(exp.splitWith) && exp.splitWith.length > 0) {
         return exp.splitWith;
     }
@@ -212,26 +205,24 @@ const generateUsername = (name)=>{
 function computeRawBalances(group) {
     const memberUids = Object.keys(group.members || {});
     const bals = {};
+    // Set initial balance to zero
     memberUids.forEach((m)=>{
         bals[m] = 0;
     });
-    // ── Expenses ──
     for (const exp of Object.values(group.expenses || {})){
         if (!bals.hasOwnProperty(exp.paidBy)) continue;
         const sw = resolveParticipants(exp, memberUids);
         if (sw.length === 0) continue;
+        // Calculate share for each person
         const share = round2(exp.amount / sw.length);
-        // Payer gets credited for every OTHER participant's share
         const otherCount = sw.filter((m)=>m !== exp.paidBy).length;
         bals[exp.paidBy] = round2(bals[exp.paidBy] + otherCount * share);
-        // Each non-payer participant is debited their share
         for (const mid of sw){
             if (mid !== exp.paidBy && bals.hasOwnProperty(mid)) {
                 bals[mid] = round2(bals[mid] - share);
             }
         }
     }
-    // ── Payments (settlements already made) ──
     for (const pay of Object.values(group.payments || {})){
         if (bals.hasOwnProperty(pay.from)) bals[pay.from] = round2(bals[pay.from] - pay.amount);
         if (bals.hasOwnProperty(pay.to)) bals[pay.to] = round2(bals[pay.to] + pay.amount);
@@ -252,13 +243,11 @@ function getMyDebts(group, uid) {
         const share = round2(exp.amount / sw.length);
         owed[exp.paidBy] = round2((owed[exp.paidBy] || 0) + share);
     }
-    // Subtract payments I've already made
     for (const pay of Object.values(group.payments || {})){
         if (pay.from === uid && pay.to) {
             owed[pay.to] = round2((owed[pay.to] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding debts
     const result = {};
     for (const [creditor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[creditor] = round2(amt);
@@ -279,13 +268,11 @@ function getMyCredits(group, uid) {
             }
         }
     }
-    // Subtract payments already received
     for (const pay of Object.values(group.payments || {})){
         if (pay.to === uid && pay.from) {
             owed[pay.from] = round2((owed[pay.from] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding credits
     const result = {};
     for (const [debtor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[debtor] = round2(amt);
@@ -293,9 +280,10 @@ function getMyCredits(group, uid) {
     return result;
 }
 function computeSettlementPlan(group) {
+    // Calculate minimum settlement transactions
     const bals = computeRawBalances(group);
-    const creditors = []; // uid owes money to others  (balance > 0)
-    const debtors = []; // uid is owed money by others(balance < 0)
+    const creditors = []; // Users who are owed money
+    const debtors = []; // Users who owe money
     for (const [uid, bal] of Object.entries(bals)){
         if (bal > 0.005) creditors.push({
             uid,

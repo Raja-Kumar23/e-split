@@ -1,0 +1,481 @@
+.split-layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 16px;
+  min-height: calc(100vh - 120px);
+}
+
+/* ── Left panel — group list ── */
+
+.groups-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+}
+
+.group-item {
+  padding: 11px 13px;
+  border-radius: var(--r);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 5px;
+}
+
+.group-item:hover {
+  background: var(--bg2);
+  border-color: var(--border);
+}
+
+.group-item.selected {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+}
+
+.group-name {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.group-meta {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Right panel — group detail ── */
+
+.detail-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+}
+
+/* ── Balance banner ── */
+
+.balance-banner {
+  border-radius: var(--r);
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-left: 3px solid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.balance-banner.settled {
+  background: linear-gradient(135deg, var(--green-dim), rgba(13, 158, 78, 0.03));
+  border-left-color: var(--green);
+}
+
+.balance-banner.owe {
+  background: linear-gradient(135deg, var(--red-dim), rgba(204, 62, 62, 0.03));
+  border-left-color: var(--red);
+}
+
+.balance-banner.owed {
+  background: linear-gradient(135deg, var(--blue-dim), rgba(61, 111, 240, 0.03));
+  border-left-color: var(--blue);
+}
+
+.banner-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.banner-content {
+  flex: 1;
+}
+
+.banner-text {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.banner-sub {
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+/* ── Inline add-expense form ── */
+
+.inline-form {
+  background: linear-gradient(135deg, var(--surface2), var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  margin-bottom: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.inline-form-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Member pill toggles ── */
+
+.member-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.member-check.checked {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── Split per-person preview ── */
+
+.split-preview {
+  background: var(--gold-dim);
+  border: 1px solid rgba(200, 134, 26, 0.2);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  margin-top: 7px;
+}
+
+.split-preview-label {
+  font-size: 9px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.split-preview-val {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Member chips ── */
+
+.members-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.member-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px 4px 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.mini-av {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: #000;
+  flex-shrink: 0;
+}
+
+/* ── Tabs bar ── */
+
+.tabs-bar {
+  display: flex;
+  gap: 2px;
+  background: var(--bg2);
+  border-radius: var(--r-sm);
+  padding: 3px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 7px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  font-family: 'Sora', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text3);
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: var(--surface);
+  color: var(--gold);
+  box-shadow: var(--shadow);
+}
+
+/* ── Who owes whom row ── */
+
+.owe-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.owe-row:last-child {
+  border-bottom: none;
+}
+
+.owe-person {
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--text);
+  flex: 1;
+}
+
+.owe-amount {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--red);
+}
+
+/* ── Expense row card ── */
+
+.exp-row {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 7px;
+  background: var(--surface2);
+  transition: border-color 0.2s;
+}
+
+.exp-row:hover {
+  border-color: var(--border2);
+}
+
+.exp-row-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.exp-desc {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.exp-by {
+  font-size: 9px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.exp-amount {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text);
+  text-align: right;
+}
+
+.exp-per {
+  font-size: 9px;
+  color: var(--text3);
+  text-align: right;
+  margin-top: 1px;
+}
+
+/* ── Settle-up items ── */
+
+.settle-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: var(--r);
+  margin-bottom: 7px;
+}
+
+.settle-item.owe-item {
+  background: linear-gradient(135deg, var(--red-dim), rgba(204, 62, 62, 0.02));
+  border: 1px solid rgba(204, 62, 62, 0.18);
+}
+
+.settle-item.collect-item {
+  background: linear-gradient(135deg, var(--green-dim), rgba(13, 158, 78, 0.02));
+  border: 1px solid rgba(13, 158, 78, 0.18);
+}
+
+.settle-item-info {
+  flex: 1;
+}
+
+.settle-item-name {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.settle-item-desc {
+  font-size: 10px;
+  color: var(--text2);
+  margin-top: 1px;
+}
+
+.settle-item-amount {
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  margin-right: 10px;
+}
+
+.settle-item.owe-item     .settle-item-amount { color: var(--red);   }
+.settle-item.collect-item .settle-item-amount { color: var(--green); }
+
+.settle-btn {
+  padding: 8px 14px;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Sora', sans-serif;
+  background: var(--red);
+}
+
+.settle-btn:hover {
+  background: var(--red2);
+  transform: translateY(-1px);
+}
+
+/* ── Payment modal ── */
+
+.pay-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  overflow-y: auto;
+}
+
+.pay-modal {
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.2s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.pay-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.pay-modal-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+/* ── Group detail headings ── */
+
+.group-detail-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.group-detail-sub {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* ── Net balance summary ── */
+
+.net-balance-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.net-balance-header {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 10px;
+}
+
+.net-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.net-row:last-child {
+  border-bottom: none;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 14px 0;
+}

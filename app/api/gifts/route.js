@@ -29,7 +29,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { from, to, amount, cardId, cardEmoji, cardName, message } = body;
+    const { from, to, amount, cardId, cardColor, cardName, message } = body;
 
     if (!from || !to) return err('from and to are required');
     if (from === to) return err('Cannot send gift to yourself');
@@ -71,7 +71,7 @@ export async function POST(request) {
       toName: toUser.name,
       toUsername: toUser.username || '',
       cardId,
-      cardEmoji: cardEmoji || '',
+      cardColor: cardColor || '#ccc',
       cardName,
       amount: parsedAmount,
       message: message?.trim() || '',

@@ -80,20 +80,23 @@ function AuthPage() {
     const [preview, setPreview] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const showToast = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Toast$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useToast"])();
     const handleLogin = async ()=>{
+        // Clear previous errors
         setLoginErr('');
+        // Check if fields are empty
         if (!loginEmail || !loginPass) {
             setLoginErr('Please fill in all fields.');
             return;
         }
         try {
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$node$2d$esm$2f$totp$2d$b6f03300$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__ac__as__signInWithEmailAndPassword$3e$__["signInWithEmailAndPassword"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["auth"], loginEmail, loginPass);
-            showToast('Welcome back! 👋', 'success');
+            showToast('Welcome back! ', 'success');
         } catch  {
             setLoginErr('Invalid email or password.');
         }
     };
     const handleSignup = async ()=>{
         setSignupErr('');
+        // Validate input fields
         if (!signupName || !signupEmail || !signupPass) {
             setSignupErr('Please fill all fields.');
             return;
@@ -103,8 +106,10 @@ function AuthPage() {
             return;
         }
         try {
+            // Generate username from full name
             const username = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["generateUsername"])(signupName);
             const cred = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$node$2d$esm$2f$totp$2d$b6f03300$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__ab__as__createUserWithEmailAndPassword$3e$__["createUserWithEmailAndPassword"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["auth"], signupEmail, signupPass);
+            // Save user to database and add initial balance
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'users/' + cred.user.uid), {
                 name: signupName,
                 email: signupEmail,
@@ -114,7 +119,7 @@ function AuthPage() {
                 createdAt: Date.now()
             });
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'usernames/' + username), cred.user.uid);
-            showToast('Account created! @' + username + ' 🎉', 'success');
+            showToast('Account created! @' + username + ' ', 'success');
         } catch (e) {
             if (e.code === 'auth/email-already-in-use') setSignupErr('Email already in use.');
             else setSignupErr(e.message);
@@ -125,8 +130,10 @@ function AuthPage() {
             const provider = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$node$2d$esm$2f$totp$2d$b6f03300$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__Y__as__GoogleAuthProvider$3e$__["GoogleAuthProvider"]();
             const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$node$2d$esm$2f$totp$2d$b6f03300$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__d__as__signInWithPopup$3e$__["signInWithPopup"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["auth"], provider);
             const user = result.user;
+            // Check if user exists
             const snap = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["get"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'users/' + user.uid));
             if (!snap.exists()) {
+                // Use email if name is not available
                 const name = user.displayName || user.email.split('@')[0];
                 const username = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["generateUsername"])(name);
                 await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'users/' + user.uid), {
@@ -138,9 +145,9 @@ function AuthPage() {
                     createdAt: Date.now()
                 });
                 await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["set"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'usernames/' + username), user.uid);
-                showToast('Welcome ' + name + '! 🎉', 'success');
+                showToast('Welcome ' + name + '! ', 'success');
             } else {
-                showToast('Welcome back! 👋', 'success');
+                showToast('Welcome back! ', 'success');
             }
         } catch (e) {
             if (e.code !== 'auth/popup-closed-by-user') showToast('Google sign-in failed', 'error');
@@ -157,14 +164,14 @@ function AuthPage() {
                 className: "auth-mesh"
             }, void 0, false, {
                 fileName: "[project]/app/components/AuthPage.js",
-                lineNumber: 93,
+                lineNumber: 103,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "auth-grid"
             }, void 0, false, {
                 fileName: "[project]/app/components/AuthPage.js",
-                lineNumber: 94,
+                lineNumber: 104,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -175,24 +182,24 @@ function AuthPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "auth-brand-logo",
-                                children: "⚡ E-Split"
+                                children: "E-Split"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/AuthPage.js",
-                                lineNumber: 97,
+                                lineNumber: 107,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "auth-brand-sub",
-                                children: "Social expense management, reimagined"
+                                children: "Expense splitting platform"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/AuthPage.js",
-                                lineNumber: 98,
+                                lineNumber: 108,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/AuthPage.js",
-                        lineNumber: 96,
+                        lineNumber: 106,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -207,7 +214,7 @@ function AuthPage() {
                                         children: "Sign In"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 102,
+                                        lineNumber: 112,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -216,148 +223,17 @@ function AuthPage() {
                                         children: "Create Account"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 103,
+                                        lineNumber: 113,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/AuthPage.js",
-                                lineNumber: 101,
+                                lineNumber: 111,
                                 columnNumber: 11
                             }, this),
                             tab === 'login' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "fgroup",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                children: "Email"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 107,
-                                                columnNumber: 39
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                type: "email",
-                                                value: loginEmail,
-                                                onChange: (e)=>setLoginEmail(e.target.value),
-                                                placeholder: "you@email.com",
-                                                onKeyDown: (e)=>e.key === 'Enter' && handleLogin()
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 107,
-                                                columnNumber: 59
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 107,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "fgroup",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                children: "Password"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 108,
-                                                columnNumber: 39
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                type: "password",
-                                                value: loginPass,
-                                                onChange: (e)=>setLoginPass(e.target.value),
-                                                placeholder: "••••••••",
-                                                onKeyDown: (e)=>e.key === 'Enter' && handleLogin()
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 108,
-                                                columnNumber: 62
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 108,
-                                        columnNumber: 15
-                                    }, this),
-                                    loginErr && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "auth-err",
-                                        children: loginErr
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 109,
-                                        columnNumber: 28
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "btn-auth",
-                                        style: {
-                                            marginTop: loginErr ? 10 : 0
-                                        },
-                                        onClick: handleLogin,
-                                        children: "Sign In →"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 110,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "auth-divider",
-                                        children: "or"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 111,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        className: "btn-google",
-                                        onClick: handleGoogle,
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(GoogleIcon, {}, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 112,
-                                                columnNumber: 69
-                                            }, this),
-                                            "Continue with Google"
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 112,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/AuthPage.js",
-                                lineNumber: 106,
-                                columnNumber: 13
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "fgroup",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                children: "Full Name"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 116,
-                                                columnNumber: 39
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                type: "text",
-                                                value: signupName,
-                                                onChange: (e)=>onNameInput(e.target.value),
-                                                placeholder: "John Doe"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 116,
-                                                columnNumber: 63
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 116,
-                                        columnNumber: 15
-                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "fgroup",
                                         children: [
@@ -370,9 +246,10 @@ function AuthPage() {
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "email",
-                                                value: signupEmail,
-                                                onChange: (e)=>setSignupEmail(e.target.value),
-                                                placeholder: "you@email.com"
+                                                value: loginEmail,
+                                                onChange: (e)=>setLoginEmail(e.target.value),
+                                                placeholder: "sahrajakumar885@gail.com",
+                                                onKeyDown: (e)=>e.key === 'Enter' && handleLogin()
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/AuthPage.js",
                                                 lineNumber: 117,
@@ -388,10 +265,140 @@ function AuthPage() {
                                         className: "fgroup",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                children: "Password (min 6 chars)"
+                                                children: "Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/AuthPage.js",
                                                 lineNumber: 118,
+                                                columnNumber: 39
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                type: "password",
+                                                value: loginPass,
+                                                onChange: (e)=>setLoginPass(e.target.value),
+                                                placeholder: "••••••••",
+                                                onKeyDown: (e)=>e.key === 'Enter' && handleLogin()
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 118,
+                                                columnNumber: 62
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 118,
+                                        columnNumber: 15
+                                    }, this),
+                                    loginErr && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "auth-err",
+                                        children: loginErr
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 119,
+                                        columnNumber: 28
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        className: "btn-auth",
+                                        style: {
+                                            marginTop: loginErr ? 10 : 0
+                                        },
+                                        onClick: handleLogin,
+                                        children: "Sign In →"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 120,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "auth-divider",
+                                        children: "or"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 121,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        className: "btn-google",
+                                        onClick: handleGoogle,
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(GoogleIcon, {}, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 122,
+                                                columnNumber: 69
+                                            }, this),
+                                            "Continue with Google"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 122,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/AuthPage.js",
+                                lineNumber: 116,
+                                columnNumber: 13
+                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "fgroup",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                children: "Full Name"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 126,
+                                                columnNumber: 39
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                type: "text",
+                                                value: signupName,
+                                                onChange: (e)=>onNameInput(e.target.value),
+                                                placeholder: "Student Name"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 126,
+                                                columnNumber: 63
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 126,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "fgroup",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                children: "Email"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 127,
+                                                columnNumber: 39
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                type: "email",
+                                                value: signupEmail,
+                                                onChange: (e)=>setSignupEmail(e.target.value),
+                                                placeholder: "student@university.edu"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 127,
+                                                columnNumber: 59
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/AuthPage.js",
+                                        lineNumber: 127,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "fgroup",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                children: "Password (min 6 chars)"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/AuthPage.js",
+                                                lineNumber: 128,
                                                 columnNumber: 39
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -402,13 +409,13 @@ function AuthPage() {
                                                 onKeyDown: (e)=>e.key === 'Enter' && handleSignup()
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 118,
+                                                lineNumber: 128,
                                                 columnNumber: 76
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 118,
+                                        lineNumber: 128,
                                         columnNumber: 15
                                     }, this),
                                     preview && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -419,7 +426,7 @@ function AuthPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 119,
+                                        lineNumber: 129,
                                         columnNumber: 27
                                     }, this),
                                     signupErr && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -427,7 +434,7 @@ function AuthPage() {
                                         children: signupErr
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 120,
+                                        lineNumber: 130,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -439,7 +446,7 @@ function AuthPage() {
                                         children: "Create Account →"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 121,
+                                        lineNumber: 131,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -447,7 +454,7 @@ function AuthPage() {
                                         children: "or"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 122,
+                                        lineNumber: 132,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -456,38 +463,38 @@ function AuthPage() {
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(GoogleIcon, {}, void 0, false, {
                                                 fileName: "[project]/app/components/AuthPage.js",
-                                                lineNumber: 123,
+                                                lineNumber: 133,
                                                 columnNumber: 69
                                             }, this),
                                             "Sign up with Google"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/AuthPage.js",
-                                        lineNumber: 123,
+                                        lineNumber: 133,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/AuthPage.js",
-                                lineNumber: 115,
+                                lineNumber: 125,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/AuthPage.js",
-                        lineNumber: 100,
+                        lineNumber: 110,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/AuthPage.js",
-                lineNumber: 95,
+                lineNumber: 105,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/AuthPage.js",
-        lineNumber: 92,
+        lineNumber: 102,
         columnNumber: 5
     }, this);
 }
@@ -516,28 +523,30 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2
 function Topnav({ activePage, onNav, pendingCount }) {
     const { userData } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    // Define navigation tabs and their display labels
     const tabs = [
         {
             id: 'dashboard',
-            label: '💰 Dashboard'
+            label: 'Dashboard'
         },
         {
             id: 'esplit',
-            label: '🤝 E-Split'
+            label: 'E-Split'
         },
         {
             id: 'connections',
-            label: '👥 People'
+            label: 'People'
         },
         {
             id: 'gifts',
-            label: '🎁 Gifts'
+            label: 'Gifts'
         },
         {
             id: 'profile',
-            label: '👤 Profile'
+            label: 'Profile'
         }
     ];
+    // Handle user logout sequence
     const logout = async ()=>{
         if (!confirm('Logout?')) return;
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$node$2d$esm$2f$totp$2d$b6f03300$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__D__as__signOut$3e$__["signOut"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["auth"]);
@@ -547,10 +556,10 @@ function Topnav({ activePage, onNav, pendingCount }) {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "nav-logo",
-                children: "⚡ E-Split"
+                children: "E-Split"
             }, void 0, false, {
                 fileName: "[project]/app/components/Topnav.js",
-                lineNumber: 27,
+                lineNumber: 29,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -564,18 +573,18 @@ function Topnav({ activePage, onNav, pendingCount }) {
                                 className: "notif-dot"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Topnav.js",
-                                lineNumber: 36,
+                                lineNumber: 38,
                                 columnNumber: 60
                             }, this)
                         ]
                     }, t.id, true, {
                         fileName: "[project]/app/components/Topnav.js",
-                        lineNumber: 30,
+                        lineNumber: 32,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/Topnav.js",
-                lineNumber: 28,
+                lineNumber: 30,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -589,7 +598,7 @@ function Topnav({ activePage, onNav, pendingCount }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Topnav.js",
-                        lineNumber: 41,
+                        lineNumber: 43,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -602,7 +611,7 @@ function Topnav({ activePage, onNav, pendingCount }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(userData?.name || 'U')
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Topnav.js",
-                                lineNumber: 43,
+                                lineNumber: 45,
                                 columnNumber: 11
                             }, this),
                             open && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -614,50 +623,50 @@ function Topnav({ activePage, onNav, pendingCount }) {
                                             onNav('profile');
                                             setOpen(false);
                                         },
-                                        children: "👤 View Profile"
+                                        children: "View Profile"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Topnav.js",
-                                        lineNumber: 52,
+                                        lineNumber: 54,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "dropdown-sep"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Topnav.js",
-                                        lineNumber: 55,
+                                        lineNumber: 57,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "dropdown-item danger",
                                         onClick: logout,
-                                        children: "🚪 Logout"
+                                        children: "Logout"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Topnav.js",
-                                        lineNumber: 56,
+                                        lineNumber: 58,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Topnav.js",
-                                lineNumber: 51,
+                                lineNumber: 53,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Topnav.js",
-                        lineNumber: 42,
+                        lineNumber: 44,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Topnav.js",
-                lineNumber: 40,
+                lineNumber: 42,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/Topnav.js",
-        lineNumber: 26,
+        lineNumber: 28,
         columnNumber: 5
     }, this);
 }
@@ -671,7 +680,10 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * Bottom Navigation Component.
+ * Provides mobile-friendly tab switching and integrates an interactive QR scanner modal.
+ */ 'use client';
 ;
 ;
 function BottomNav({ activePage, onNav }) {
@@ -682,23 +694,22 @@ function BottomNav({ activePage, onNav }) {
     const tabs = [
         {
             id: 'dashboard',
-            icon: '💰',
+            icon: '',
             label: 'Dashboard'
         },
         {
             id: 'esplit',
-            icon: '🤝',
+            icon: '',
             label: 'E-Split'
         },
-        // scanner button in center — handled separately
         {
             id: 'connections',
-            icon: '👥',
+            icon: '',
             label: 'People'
         },
         {
             id: 'gifts',
-            icon: '🎁',
+            icon: '',
             label: 'Gifts'
         }
     ];
@@ -706,18 +717,19 @@ function BottomNav({ activePage, onNav }) {
         setScanning(true);
         setScanned(false);
         setScanResult(null);
-        // demo: simulate scan after 2s
+        // Add a short delay to simulate scanning
         setTimeout(()=>{
             setScanning(false);
             setScanned(true);
             setScanResult({
-                merchant: 'Himalayan Café',
+                merchant: 'College Canteen',
                 amount: '450.00',
                 method: 'eSewa',
                 ref: 'TXN' + Math.floor(100000 + Math.random() * 900000)
             });
         }, 2000);
     };
+    // Reset scanner state when payment is confirmed
     const handleConfirmPayment = ()=>{
         setShowScanner(false);
         setScanned(false);
@@ -737,7 +749,7 @@ function BottomNav({ activePage, onNav }) {
                                     children: t.icon
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 52,
+                                    lineNumber: 57,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -745,13 +757,13 @@ function BottomNav({ activePage, onNav }) {
                                     children: t.label
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 53,
+                                    lineNumber: 58,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, t.id, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 47,
+                            lineNumber: 52,
                             columnNumber: 11
                         }, this)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -780,7 +792,7 @@ function BottomNav({ activePage, onNav }) {
                                                 rx: "1"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/BottomNav.js",
-                                                lineNumber: 63,
+                                                lineNumber: 68,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("rect", {
@@ -791,7 +803,7 @@ function BottomNav({ activePage, onNav }) {
                                                 rx: "1"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/BottomNav.js",
-                                                lineNumber: 64,
+                                                lineNumber: 69,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("rect", {
@@ -802,25 +814,25 @@ function BottomNav({ activePage, onNav }) {
                                                 rx: "1"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/BottomNav.js",
-                                                lineNumber: 65,
+                                                lineNumber: 70,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
                                                 d: "M14 14h2v2h-2zM18 14h3M14 18h2M18 18h3v3M21 14v2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/BottomNav.js",
-                                                lineNumber: 66,
+                                                lineNumber: 71,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/BottomNav.js",
-                                        lineNumber: 62,
+                                        lineNumber: 67,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 60,
+                                    lineNumber: 65,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -832,18 +844,18 @@ function BottomNav({ activePage, onNav }) {
                                     children: "Scan"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 69,
+                                    lineNumber: 74,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 59,
+                            lineNumber: 64,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/BottomNav.js",
-                        lineNumber: 58,
+                        lineNumber: 63,
                         columnNumber: 9
                     }, this),
                     tabs.slice(2).map((t)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -855,7 +867,7 @@ function BottomNav({ activePage, onNav }) {
                                     children: t.icon
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 80,
+                                    lineNumber: 85,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -863,19 +875,19 @@ function BottomNav({ activePage, onNav }) {
                                     children: t.label
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 81,
+                                    lineNumber: 86,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, t.id, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 75,
+                            lineNumber: 80,
                             columnNumber: 11
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/BottomNav.js",
-                lineNumber: 44,
+                lineNumber: 49,
                 columnNumber: 7
             }, this),
             showScanner && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -890,7 +902,7 @@ function BottomNav({ activePage, onNav }) {
                             className: "scanner-handle"
                         }, void 0, false, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 91,
+                            lineNumber: 96,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -898,10 +910,10 @@ function BottomNav({ activePage, onNav }) {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "scanner-title",
-                                    children: "📷 QR Payment Scanner"
+                                    children: " QR Payment Scanner"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 94,
+                                    lineNumber: 99,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -909,13 +921,13 @@ function BottomNav({ activePage, onNav }) {
                                     children: "Scan an eSewa or bank QR code to pay"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 95,
+                                    lineNumber: 100,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 93,
+                            lineNumber: 98,
                             columnNumber: 13
                         }, this),
                         !scanned ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -932,47 +944,47 @@ function BottomNav({ activePage, onNav }) {
                                                     className: "scan-cell"
                                                 }, i, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 106,
+                                                    lineNumber: 111,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 104,
+                                            lineNumber: 109,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "scan-corner tl"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 110,
+                                            lineNumber: 115,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "scan-corner tr"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 111,
+                                            lineNumber: 116,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "scan-corner bl"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 112,
+                                            lineNumber: 117,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "scan-corner br"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 113,
+                                            lineNumber: 118,
                                             columnNumber: 19
                                         }, this),
                                         scanning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "scan-line"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 115,
+                                            lineNumber: 120,
                                             columnNumber: 32
                                         }, this),
                                         !scanning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -994,7 +1006,7 @@ function BottomNav({ activePage, onNav }) {
                                                             rx: "1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/BottomNav.js",
-                                                            lineNumber: 120,
+                                                            lineNumber: 125,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("rect", {
@@ -1005,7 +1017,7 @@ function BottomNav({ activePage, onNav }) {
                                                             rx: "1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/BottomNav.js",
-                                                            lineNumber: 121,
+                                                            lineNumber: 126,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("rect", {
@@ -1016,20 +1028,20 @@ function BottomNav({ activePage, onNav }) {
                                                             rx: "1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/BottomNav.js",
-                                                            lineNumber: 122,
+                                                            lineNumber: 127,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
                                                             d: "M14 14h2v2h-2zM18 14h3M14 18h2M18 18h3v3M21 14v2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/BottomNav.js",
-                                                            lineNumber: 123,
+                                                            lineNumber: 128,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 119,
+                                                    lineNumber: 124,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1041,13 +1053,13 @@ function BottomNav({ activePage, onNav }) {
                                                     children: "Position QR code here"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 125,
+                                                    lineNumber: 130,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 118,
+                                            lineNumber: 123,
                                             columnNumber: 21
                                         }, this),
                                         scanning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1057,45 +1069,44 @@ function BottomNav({ activePage, onNav }) {
                                                     className: "scan-status-dot"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 130,
+                                                    lineNumber: 135,
                                                     columnNumber: 23
                                                 }, this),
                                                 "Scanning…"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 129,
+                                            lineNumber: 134,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 102,
+                                    lineNumber: 107,
                                     columnNumber: 17
                                 }, this),
                                 !scanning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     className: "scan-demo-btn",
                                     onClick: handleScanDemo,
-                                    children: "📷 Tap to Simulate Scan (Demo)"
+                                    children: "Tap to Simulate Scan (Demo)"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 138,
+                                    lineNumber: 143,
                                     columnNumber: 19
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 100,
+                            lineNumber: 105,
                             columnNumber: 15
                         }, this) : /* ── scan result ── */ /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "scan-result",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "scan-result-icon",
-                                    children: "✅"
+                                    className: "scan-result-icon"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 146,
+                                    lineNumber: 151,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1103,7 +1114,7 @@ function BottomNav({ activePage, onNav }) {
                                     children: "QR Code Scanned!"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 147,
+                                    lineNumber: 152,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1111,7 +1122,7 @@ function BottomNav({ activePage, onNav }) {
                                     children: scanResult.merchant
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 148,
+                                    lineNumber: 153,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1124,7 +1135,7 @@ function BottomNav({ activePage, onNav }) {
                                                     children: "Amount"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 152,
+                                                    lineNumber: 157,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1135,13 +1146,13 @@ function BottomNav({ activePage, onNav }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 153,
+                                                    lineNumber: 158,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 151,
+                                            lineNumber: 156,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1151,20 +1162,20 @@ function BottomNav({ activePage, onNav }) {
                                                     children: "Method"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 156,
+                                                    lineNumber: 161,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: scanResult.method
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 157,
+                                                    lineNumber: 162,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 155,
+                                            lineNumber: 160,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1174,7 +1185,7 @@ function BottomNav({ activePage, onNav }) {
                                                     children: "Reference"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 160,
+                                                    lineNumber: 165,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1185,19 +1196,19 @@ function BottomNav({ activePage, onNav }) {
                                                     children: scanResult.ref
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/BottomNav.js",
-                                                    lineNumber: 161,
+                                                    lineNumber: 166,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 159,
+                                            lineNumber: 164,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 150,
+                                    lineNumber: 155,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1210,10 +1221,10 @@ function BottomNav({ activePage, onNav }) {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             className: "scan-confirm-btn",
                                             onClick: handleConfirmPayment,
-                                            children: "✓ Confirm Payment"
+                                            children: "Confirm Payment"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 166,
+                                            lineNumber: 171,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1225,19 +1236,19 @@ function BottomNav({ activePage, onNav }) {
                                             children: "Rescan"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 169,
+                                            lineNumber: 174,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 165,
+                                    lineNumber: 170,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 145,
+                            lineNumber: 150,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1248,7 +1259,7 @@ function BottomNav({ activePage, onNav }) {
                                     children: "Supported"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 178,
+                                    lineNumber: 183,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1263,18 +1274,18 @@ function BottomNav({ activePage, onNav }) {
                                             children: m
                                         }, m, false, {
                                             fileName: "[project]/app/components/BottomNav.js",
-                                            lineNumber: 181,
+                                            lineNumber: 186,
                                             columnNumber: 19
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/BottomNav.js",
-                                    lineNumber: 179,
+                                    lineNumber: 184,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 177,
+                            lineNumber: 182,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1287,18 +1298,18 @@ function BottomNav({ activePage, onNav }) {
                             children: "Cancel"
                         }, void 0, false, {
                             fileName: "[project]/app/components/BottomNav.js",
-                            lineNumber: 186,
+                            lineNumber: 191,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/BottomNav.js",
-                    lineNumber: 89,
+                    lineNumber: 94,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/BottomNav.js",
-                lineNumber: 88,
+                lineNumber: 93,
                 columnNumber: 9
             }, this)
         ]
@@ -1315,14 +1326,17 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/AuthProvider.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * User Dashboard Component.
+ * Aggregates global statistics, wallet balances, recent activity, and pending contributions.
+ */ 'use client';
 ;
 ;
 ;
 function Dashboard({ allGroups, onNav }) {
     const { currentUser, userData } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const uid = currentUser?.uid;
-    // ── aggregate stats across all groups ──────────────────────────────────
+    // Calculate total money stats across all groups
     let totalOwed = 0, totalOwe = 0, totalSpent = 0;
     Object.values(allGroups).forEach((g)=>{
         Object.values(g.expenses || {}).forEach((exp)=>{
@@ -1337,7 +1351,6 @@ function Dashboard({ allGroups, onNav }) {
             totalOwe = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(totalOwe + a);
         });
     });
-    // ── who still owes me across ALL groups ────────────────────────────────
     const contribs = {};
     Object.values(allGroups).forEach((g)=>{
         const credits = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getMyCredits"])(g, uid);
@@ -1354,7 +1367,7 @@ function Dashboard({ allGroups, onNav }) {
         });
     });
     const contribEntries = Object.entries(contribs).filter(([, c])=>c.total > 0.01);
-    // ── recent activity feed ───────────────────────────────────────────────
+    // Create activity feed array
     const feed = [];
     Object.values(allGroups).forEach((g)=>{
         Object.values(g.expenses || {}).forEach((e)=>{
@@ -1364,7 +1377,7 @@ function Dashboard({ allGroups, onNav }) {
                 const others = sw.filter((m)=>m !== uid).length;
                 if (others > 0) {
                     feed.push({
-                        icon: '🧾',
+                        icon: '',
                         name: e.desc,
                         desc: `in ${g.name} — you paid for ${others} other${others !== 1 ? 's' : ''}`,
                         val: '+' + (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(e.amount),
@@ -1375,7 +1388,7 @@ function Dashboard({ allGroups, onNav }) {
             } else if (sw.includes(uid)) {
                 const share = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(e.amount / (sw.length || 1));
                 feed.push({
-                    icon: '🧾',
+                    icon: '',
                     name: e.desc,
                     desc: `in ${g.name} — your share`,
                     val: '-' + (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(share),
@@ -1390,7 +1403,7 @@ function Dashboard({ allGroups, onNav }) {
             const fn = (g.members?.[p.from] || {}).name || '?';
             const tn = (g.members?.[p.to] || {}).name || '?';
             feed.push({
-                icon: '💳',
+                icon: '',
                 name: isFrom ? `You → ${tn}` : `${fn} → You`,
                 desc: `Payment in ${g.name}`,
                 val: (isTo ? '+' : '-') + (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(p.amount),
@@ -1413,7 +1426,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "Wallet Balance"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 85,
+                                lineNumber: 87,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1421,7 +1434,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData?.balance || 0)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 86,
+                                lineNumber: 88,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1429,13 +1442,13 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "Available"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 87,
+                                lineNumber: 89,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 84,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1446,7 +1459,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "Owed to You"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 90,
+                                lineNumber: 92,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1454,7 +1467,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(totalOwed)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 91,
+                                lineNumber: 93,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1462,13 +1475,13 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "From friends"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 92,
+                                lineNumber: 94,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 89,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1479,7 +1492,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "You Owe"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 95,
+                                lineNumber: 97,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1487,7 +1500,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(totalOwe)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 96,
+                                lineNumber: 98,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1495,13 +1508,13 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "To friends"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 97,
+                                lineNumber: 99,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 94,
+                        lineNumber: 96,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1512,7 +1525,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "Total Spent"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 100,
+                                lineNumber: 102,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1520,7 +1533,7 @@ function Dashboard({ allGroups, onNav }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData?.totalSpent || 0)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 101,
+                                lineNumber: 103,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1528,19 +1541,19 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "All time"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 102,
+                                lineNumber: 104,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 99,
+                        lineNumber: 101,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Dashboard.js",
-                lineNumber: 83,
+                lineNumber: 85,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1550,11 +1563,10 @@ function Dashboard({ allGroups, onNav }) {
                         className: "dash-card",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "dash-card-chip",
-                                children: "🏦"
+                                className: "dash-card-chip"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 109,
+                                lineNumber: 110,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1564,7 +1576,7 @@ function Dashboard({ allGroups, onNav }) {
                                         children: "Current Balance"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 111,
+                                        lineNumber: 112,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1572,21 +1584,21 @@ function Dashboard({ allGroups, onNav }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData?.balance || 0)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 112,
+                                        lineNumber: 113,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 110,
+                                lineNumber: 111,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "dash-card-number",
-                                children: "4532 •••• •••• 9847"
+                                children: "Student Account"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 114,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1599,7 +1611,7 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: (userData?.name || 'User').toUpperCase()
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 117,
+                                                lineNumber: 118,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1607,17 +1619,17 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: [
                                                     "@",
                                                     userData?.username || 'user',
-                                                    " · E-Split Wallet"
+                                                    " · Internal Wallet"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 118,
+                                                lineNumber: 119,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 116,
+                                        lineNumber: 117,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1634,10 +1646,10 @@ function Dashboard({ allGroups, onNav }) {
                                                     letterSpacing: '.5px',
                                                     marginBottom: 2
                                                 },
-                                                children: "Valid Thru"
+                                                children: "Status"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 121,
+                                                lineNumber: 122,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1647,28 +1659,28 @@ function Dashboard({ allGroups, onNav }) {
                                                     color: '#fff',
                                                     fontWeight: 600
                                                 },
-                                                children: "12/27"
+                                                children: "Active"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 122,
+                                                lineNumber: 123,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 120,
+                                        lineNumber: 121,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 115,
+                                lineNumber: 116,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 108,
+                        lineNumber: 109,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1679,10 +1691,10 @@ function Dashboard({ allGroups, onNav }) {
                                 style: {
                                     marginBottom: 10
                                 },
-                                children: "⚡ Quick Actions"
+                                children: "Quick Actions"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 128,
+                                lineNumber: 129,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1690,11 +1702,10 @@ function Dashboard({ allGroups, onNav }) {
                                 onClick: ()=>onNav('esplit', true),
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "quick-action-icon",
-                                        children: "👥"
+                                        className: "quick-action-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 130,
+                                        lineNumber: 131,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1704,7 +1715,7 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Create E-Split"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 132,
+                                                lineNumber: 133,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1712,19 +1723,19 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Split bills with friends"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 133,
+                                                lineNumber: 134,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 131,
+                                        lineNumber: 132,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 129,
+                                lineNumber: 130,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1732,11 +1743,10 @@ function Dashboard({ allGroups, onNav }) {
                                 onClick: ()=>onNav('connections'),
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "quick-action-icon",
-                                        children: "🔗"
+                                        className: "quick-action-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 137,
+                                        lineNumber: 138,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1746,7 +1756,7 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Add Connection"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 139,
+                                                lineNumber: 140,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1754,19 +1764,19 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Connect via @username"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 140,
+                                                lineNumber: 141,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 138,
+                                        lineNumber: 139,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 136,
+                                lineNumber: 137,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1774,11 +1784,10 @@ function Dashboard({ allGroups, onNav }) {
                                 onClick: ()=>onNav('gifts'),
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "quick-action-icon",
-                                        children: "🎁"
+                                        className: "quick-action-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 144,
+                                        lineNumber: 145,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1788,7 +1797,7 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Send Gift Card"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 146,
+                                                lineNumber: 147,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1796,31 +1805,31 @@ function Dashboard({ allGroups, onNav }) {
                                                 children: "Surprise a friend"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Dashboard.js",
-                                                lineNumber: 147,
+                                                lineNumber: 148,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Dashboard.js",
-                                        lineNumber: 145,
+                                        lineNumber: 146,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 143,
+                                lineNumber: 144,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 127,
+                        lineNumber: 128,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Dashboard.js",
-                lineNumber: 107,
+                lineNumber: 108,
                 columnNumber: 7
             }, this),
             contribEntries.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1833,7 +1842,7 @@ function Dashboard({ allGroups, onNav }) {
                         className: "section-header",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "section-title",
-                            children: "💚 Waiting on Contributions"
+                            children: "Waiting on Contributions"
                         }, void 0, false, {
                             fileName: "[project]/app/components/Dashboard.js",
                             lineNumber: 157,
@@ -1921,26 +1930,25 @@ function Dashboard({ allGroups, onNav }) {
                         className: "section-header",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "section-title",
-                            children: "📋 Recent Activity"
+                            children: "Recent Activity"
                         }, void 0, false, {
                             fileName: "[project]/app/components/Dashboard.js",
-                            lineNumber: 179,
+                            lineNumber: 178,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 178,
+                        lineNumber: 177,
                         columnNumber: 9
                     }, this),
                     !feed.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "empty",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "empty-icon",
-                                children: "📭"
+                                className: "empty-icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 182,
+                                lineNumber: 181,
                                 columnNumber: 34
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1948,13 +1956,13 @@ function Dashboard({ allGroups, onNav }) {
                                 children: "No activity yet"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Dashboard.js",
-                                lineNumber: 182,
-                                columnNumber: 70
+                                lineNumber: 181,
+                                columnNumber: 68
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Dashboard.js",
-                        lineNumber: 182,
+                        lineNumber: 181,
                         columnNumber: 11
                     }, this) : feed.slice(0, 10).map((item, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "activity-item",
@@ -1964,7 +1972,7 @@ function Dashboard({ allGroups, onNav }) {
                                     children: item.icon
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/Dashboard.js",
-                                    lineNumber: 186,
+                                    lineNumber: 185,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1974,7 +1982,7 @@ function Dashboard({ allGroups, onNav }) {
                                             children: item.name
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Dashboard.js",
-                                            lineNumber: 188,
+                                            lineNumber: 187,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1982,13 +1990,13 @@ function Dashboard({ allGroups, onNav }) {
                                             children: item.desc
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Dashboard.js",
-                                            lineNumber: 189,
+                                            lineNumber: 188,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/Dashboard.js",
-                                    lineNumber: 187,
+                                    lineNumber: 186,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1998,7 +2006,7 @@ function Dashboard({ allGroups, onNav }) {
                                             children: item.val
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Dashboard.js",
-                                            lineNumber: 192,
+                                            lineNumber: 191,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2006,31 +2014,31 @@ function Dashboard({ allGroups, onNav }) {
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmtDate"])(item.time)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Dashboard.js",
-                                            lineNumber: 193,
+                                            lineNumber: 192,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/Dashboard.js",
-                                    lineNumber: 191,
+                                    lineNumber: 190,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, i, true, {
                             fileName: "[project]/app/components/Dashboard.js",
-                            lineNumber: 185,
+                            lineNumber: 184,
                             columnNumber: 13
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Dashboard.js",
-                lineNumber: 177,
+                lineNumber: 176,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/Dashboard.js",
-        lineNumber: 81,
+        lineNumber: 84,
         columnNumber: 5
     }, this);
 }
@@ -2063,9 +2071,10 @@ __turbopack_context__.s([
     ()=>updateUser
 ]);
 /**
- * All client → server communication goes through these functions.
- * They call our own Next.js API routes (never Firebase directly from components).
+ * Centralized API client for all server communication.
+ * Wraps native fetch to interact with backend endpoints seamlessly.
  */ async function call(path, options = {}) {
+    // Helper function for API requests
     const res = await fetch(path, {
         headers: {
             'Content-Type': 'application/json'
@@ -2073,6 +2082,7 @@ __turbopack_context__.s([
         ...options
     });
     const json = await res.json();
+    // if the server yells at us, throw a proper error so the frontend can show a toast
     if (!json.ok) throw new Error(json.error || 'API error');
     return json.data;
 }
@@ -2123,7 +2133,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthPro
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Toast$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Toast.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/api.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * Core E-Split Interface Component.
+ * Handles the creation of groups, addition of expenses, direct payments, and complex settlement logic.
+ */ 'use client';
 ;
 ;
 ;
@@ -2134,7 +2147,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
     const { currentUser, userData, setUserData } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const showToast = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Toast$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useToast"])();
     const uid = currentUser?.uid;
-    const [panel, setPanel] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('empty'); // 'empty'|'new'|'detail'
+    const [panel, setPanel] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('empty');
     const [selectedGid, setSelectedGid] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [groupTab, setGroupTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('balances');
     const [showExpForm, setShowExpForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2144,7 +2157,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
     const [ngDesc, setNgDesc] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [ngSelected, setNgSelected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
     const [showPayModal, setShowPayModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [payTarget, setPayTarget] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null); // { uid, amount }
+    const [payTarget, setPayTarget] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [payNote, setPayNote] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showDirPay, setShowDirPay] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2162,26 +2175,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
         showNewGroup
     ]);
     const g = selectedGid ? allGroups[selectedGid] : null;
-    // ── derived balance data for selected group ────────────────────────────
     const myBal = g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getNetBalance"])(g, uid) : 0;
     const myDebts = g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getMyDebts"])(g, uid) : {};
     const myCredits = g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getMyCredits"])(g, uid) : {};
     const plan = g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["computeSettlementPlan"])(g) : [];
     const memberUids = g ? Object.keys(g.members || {}) : [];
     const perPersonPreview = expAmount && g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(parseFloat(expAmount) / memberUids.length) : 0;
-    // ── create group ──────────────────────────────────────────────────────
     const handleCreateGroup = async ()=>{
+        // Check if group name is empty
         if (!ngName.trim()) {
             showToast('Group name is required', 'error');
             return;
         }
-        const members = {
-            [uid]: {
-                name: userData.name,
-                email: currentUser.email,
-                username: userData.username || ''
-            }
-        };
+        // Add creator to group members
         Object.entries(ngSelected).forEach(([connUid, checked])=>{
             if (checked && allConnections[connUid]) {
                 members[connUid] = {
@@ -2202,7 +2208,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setNgName('');
             setNgDesc('');
             setNgSelected({});
-            showToast(`"${ngName}" created! 🎉`, 'success');
+            showToast(`"${ngName}" created! `, 'success');
             setSelectedGid(res.groupId);
             setPanel('detail');
             setGroupTab('balances');
@@ -2213,8 +2219,8 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setLoading(false);
         }
     };
-    // ── add expense ───────────────────────────────────────────────────────
     const handleAddExpense = async ()=>{
+        // Validate expense input fields
         if (!expDesc.trim()) {
             showToast('Description is required', 'error');
             return;
@@ -2245,7 +2251,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setExpDesc('');
             setExpAmount('');
             setShowExpForm(false);
-            showToast(`✅ Added ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} — ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(res.perPerson)}/person`, 'success');
+            showToast(` Added ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} — ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(res.perPerson)}/person`, 'success');
             onGroupsRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -2253,7 +2259,6 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setLoading(false);
         }
     };
-    // ── settle a specific debt ────────────────────────────────────────────
     const handleSettle = async (creditorUid, amount)=>{
         const creditorName = (g.members?.[creditorUid] || {}).name || '?';
         if ((userData?.balance || 0) < amount) {
@@ -2273,7 +2278,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                     ...d,
                     balance: res.fromNewBalance
                 }));
-            showToast(`✅ Paid ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} to ${creditorName}!`, 'success');
+            showToast(` Paid ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} to ${creditorName}!`, 'success');
             onGroupsRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -2281,9 +2286,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setLoading(false);
         }
     };
-    // ── settle ALL debts in one group ─────────────────────────────────────
     const handleSettleAll = async ()=>{
+        // Calculate total debt
         const totalOwe = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(Object.values(myDebts).reduce((a, b)=>a + b, 0));
+        // Return if total debt is zero
         if (totalOwe < 0.01) {
             showToast('Nothing to settle!', 'info');
             return;
@@ -2298,6 +2304,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setLoading(true);
             let newBal = userData.balance;
             for (const [creditorUid, amount] of Object.entries(myDebts)){
+                // Process each payment
                 const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createPayment"])(selectedGid, {
                     from: uid,
                     to: creditorUid,
@@ -2310,7 +2317,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                     ...d,
                     balance: newBal
                 }));
-            showToast(`🎉 All settled! ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(totalOwe)} paid.`, 'success');
+            showToast(` All settled! ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(totalOwe)} paid.`, 'success');
             onGroupsRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -2318,13 +2325,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setLoading(false);
         }
     };
-    // ── direct payment (trip payment) ─────────────────────────────────────
     const handleDirectPay = async ()=>{
         if (!dpmMerchant.trim()) {
             showToast('Enter what you paid for', 'error');
             return;
         }
         const amount = parseFloat(dpmAmount);
+        // Validate payment details
         if (!amount || amount <= 0) {
             showToast('Enter valid amount', 'error');
             return;
@@ -2333,6 +2340,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             showToast('Select payment method', 'error');
             return;
         }
+        // Check wallet balance
         if ((userData?.balance || 0) < amount) {
             showToast(`Insufficient balance. Have ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData.balance)}, need ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)}`, 'error');
             return;
@@ -2363,7 +2371,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             setDpmMethod('');
             setDpmDetail('');
             setShowDirPay(false);
-            showToast(`Paid ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} for ${dpmMerchant} via ${methodMap[dpmMethod]} ✓`, 'success');
+            showToast(`Paid ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)} for ${dpmMerchant} via ${methodMap[dpmMethod]} `, 'success');
             onGroupsRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -2388,21 +2396,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                         style: {
                             marginBottom: 10
                         },
-                        children: "📋 My E-Splits"
+                        children: "My E-Splits"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 198,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this),
                     !Object.keys(allGroups).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "empty",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "empty-icon",
-                                children: "🤝"
+                                className: "empty-icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 200,
+                                lineNumber: 209,
                                 columnNumber: 34
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2410,13 +2417,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "No E-Splits yet"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 200,
-                                columnNumber: 70
+                                lineNumber: 209,
+                                columnNumber: 68
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 200,
+                        lineNumber: 209,
                         columnNumber: 11
                     }, this) : Object.entries(allGroups).map(([gid, grp])=>{
                         const mc = Object.keys(grp.members || {}).length;
@@ -2427,8 +2434,8 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             children: "Settled"
                         }, void 0, false, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 206,
-                            columnNumber: 48
+                            lineNumber: 215,
+                            columnNumber: 47
                         }, this);
                         else if (bal < 0) badge = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             className: "badge badge-red",
@@ -2438,7 +2445,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 207,
+                            lineNumber: 216,
                             columnNumber: 39
                         }, this);
                         else badge = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2449,8 +2456,8 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 208,
-                            columnNumber: 39
+                            lineNumber: 217,
+                            columnNumber: 26
                         }, this);
                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: `group-item${selectedGid === gid ? ' selected' : ''}`,
@@ -2466,7 +2473,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: grp.name
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 215,
+                                    lineNumber: 224,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2480,20 +2487,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 216,
+                                            lineNumber: 225,
                                             columnNumber: 45
                                         }, this),
                                         badge
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 216,
+                                    lineNumber: 225,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, gid, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 210,
+                            lineNumber: 219,
                             columnNumber: 15
                         }, this);
                     }),
@@ -2510,13 +2517,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                         children: "+ New E-Split"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 221,
+                        lineNumber: 230,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 197,
+                lineNumber: 206,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2529,11 +2536,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                         },
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "empty-icon",
-                                children: "🤝"
+                                className: "empty-icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 233,
+                                lineNumber: 242,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2546,7 +2552,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "Select an E-Split"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 234,
+                                lineNumber: 243,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2557,13 +2563,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "Choose a group or create a new one"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 235,
+                                lineNumber: 244,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 232,
+                        lineNumber: 241,
                         columnNumber: 11
                     }, this),
                     panel === 'new' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2578,7 +2584,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Create New E-Split"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 243,
+                                        lineNumber: 252,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2586,13 +2592,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Only your connections can be added as members"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 244,
+                                        lineNumber: 253,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 242,
+                                lineNumber: 251,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2602,7 +2608,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Split Name"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 247,
+                                        lineNumber: 256,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2612,13 +2618,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         placeholder: "e.g. Road Trip, House Rent…"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 248,
+                                        lineNumber: 257,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 246,
+                                lineNumber: 255,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2628,7 +2634,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Description (optional)"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 251,
+                                        lineNumber: 260,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2638,13 +2644,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         placeholder: "What is this for?"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 252,
+                                        lineNumber: 261,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 250,
+                                lineNumber: 259,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2654,7 +2660,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Add Members from Connections"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 255,
+                                        lineNumber: 264,
                                         columnNumber: 15
                                     }, this),
                                     !Object.keys(allConnections).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2666,7 +2672,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "No connections yet — go to People tab to add friends."
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 257,
+                                        lineNumber: 266,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -2684,18 +2690,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: u.name || u.username || connUid
                                             }, connUid, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 263,
+                                                lineNumber: 272,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 261,
+                                        lineNumber: 270,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 254,
+                                lineNumber: 263,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2708,7 +2714,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: loading ? 'Creating…' : 'Create E-Split'
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 275,
+                                        lineNumber: 284,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2717,19 +2723,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 278,
+                                        lineNumber: 287,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 274,
+                                lineNumber: 283,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 241,
+                        lineNumber: 250,
                         columnNumber: 11
                     }, this),
                     panel === 'detail' && g && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2751,7 +2757,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: g.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 289,
+                                                lineNumber: 298,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2763,13 +2769,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 290,
+                                                lineNumber: 299,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 288,
+                                        lineNumber: 297,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2785,47 +2791,47 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "+ Expense"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 293,
+                                                lineNumber: 302,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: "btn btn-blue btn-sm",
                                                 onClick: ()=>setShowDirPay(true),
-                                                children: "💳 Record Payment"
+                                                children: "Record Payment"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 294,
+                                                lineNumber: 303,
                                                 columnNumber: 17
                                             }, this),
                                             myBal < -0.01 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: "btn btn-gold btn-sm",
                                                 onClick: handleSettleAll,
                                                 disabled: loading,
-                                                children: "⚡ Settle All"
+                                                children: "Settle All"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 296,
+                                                lineNumber: 305,
                                                 columnNumber: 19
                                             }, this),
                                             myBal > 0.01 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: "btn btn-collect btn-sm",
-                                                onClick: ()=>showToast('Reminder sent to friends! 📬', 'success'),
-                                                children: "📬 Remind"
+                                                onClick: ()=>showToast('Reminder sent to friends! ', 'success'),
+                                                children: "Remind"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 301,
+                                                lineNumber: 310,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 292,
+                                        lineNumber: 301,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 287,
+                                lineNumber: 296,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2833,10 +2839,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "banner-icon",
-                                        children: Math.abs(myBal) < 0.01 ? '✓' : myBal > 0 ? '💰' : '💸'
+                                        children: Math.abs(myBal) < 0.01 ? '' : myBal > 0 ? '' : ''
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 311,
+                                        lineNumber: 320,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2847,7 +2853,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: Math.abs(myBal) < 0.01 ? 'All settled up!' : myBal > 0 ? `You are owed ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(myBal)}` : `You owe ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(-myBal)}`
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 313,
+                                                lineNumber: 322,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2855,19 +2861,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: Math.abs(myBal) < 0.01 ? 'Everyone has paid their share' : myBal > 0 ? 'Friends still need to pay you back' : 'Use Settle All to clear your debt instantly'
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 320,
+                                                lineNumber: 329,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 312,
+                                        lineNumber: 321,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 310,
+                                lineNumber: 319,
                                 columnNumber: 13
                             }, this),
                             showExpForm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2877,25 +2883,24 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         className: "inline-form-title",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                children: "💰 Add Expense — I Paid"
+                                                children: "Add Expense — I Paid"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 334,
+                                                lineNumber: 343,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: "btn btn-ghost btn-sm",
-                                                onClick: ()=>setShowExpForm(false),
-                                                children: "✕"
+                                                onClick: ()=>setShowExpForm(false)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 335,
+                                                lineNumber: 344,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 333,
+                                        lineNumber: 342,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2915,14 +2920,14 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "you paid"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 338,
+                                                lineNumber: 347,
                                                 columnNumber: 33
                                             }, this),
                                             " for something and want to split the cost equally."
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 337,
+                                        lineNumber: 346,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2935,7 +2940,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Description"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 342,
+                                                        lineNumber: 351,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2945,13 +2950,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         placeholder: "e.g. Hotel, Dinner, Fuel…"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 343,
+                                                        lineNumber: 352,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 341,
+                                                lineNumber: 350,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2961,7 +2966,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Total Amount (NPR)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 346,
+                                                        lineNumber: 355,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2973,19 +2978,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         step: "0.01"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 347,
+                                                        lineNumber: 356,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 345,
+                                                lineNumber: 354,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 340,
+                                        lineNumber: 349,
                                         columnNumber: 17
                                     }, this),
                                     parseFloat(expAmount) > 0 && memberUids.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3000,7 +3005,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 352,
+                                                lineNumber: 361,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3008,13 +3013,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(perPersonPreview)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 353,
+                                                lineNumber: 362,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 351,
+                                        lineNumber: 360,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3030,7 +3035,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: loading ? 'Adding…' : 'Add Expense'
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 357,
+                                                lineNumber: 366,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3039,19 +3044,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Cancel"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 360,
+                                                lineNumber: 369,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 356,
+                                        lineNumber: 365,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 332,
+                                lineNumber: 341,
                                 columnNumber: 15
                             }, this),
                             (Object.keys(myCredits).length > 0 || Object.keys(myDebts).length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3087,10 +3092,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     fontWeight: 700,
                                                                     marginBottom: 2
                                                                 },
-                                                                children: "💚 Friends Owe You"
+                                                                children: "Friends Owe You"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 373,
+                                                                lineNumber: 382,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3103,13 +3108,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(Object.values(myCredits).reduce((a, b)=>a + b, 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 374,
+                                                                lineNumber: 383,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 372,
+                                                        lineNumber: 381,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3119,17 +3124,17 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             color: 'var(--green)',
                                                             border: '1px solid rgba(13,158,78,0.2)'
                                                         },
-                                                        onClick: ()=>showToast('Reminder sent! 📬', 'success'),
-                                                        children: "📬 Remind All"
+                                                        onClick: ()=>showToast('Reminder sent! ', 'success'),
+                                                        children: "Remind All"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 378,
+                                                        lineNumber: 387,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 371,
+                                                lineNumber: 380,
                                                 columnNumber: 21
                                             }, this),
                                             Object.entries(myCredits).map(([debtorUid, amount])=>{
@@ -3154,7 +3159,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 385,
+                                                            lineNumber: 394,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3168,7 +3173,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 389,
+                                                                    lineNumber: 398,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3179,13 +3184,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 390,
+                                                                    lineNumber: 399,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 388,
+                                                            lineNumber: 397,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3193,20 +3198,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 392,
+                                                            lineNumber: 401,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, debtorUid, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 384,
+                                                    lineNumber: 393,
                                                     columnNumber: 25
                                                 }, this);
                                             })
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 370,
+                                        lineNumber: 379,
                                         columnNumber: 19
                                     }, this),
                                     Object.keys(myDebts).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3237,10 +3242,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     fontWeight: 700,
                                                                     marginBottom: 2
                                                                 },
-                                                                children: "❤️ You Owe"
+                                                                children: "You Owe"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 404,
+                                                                lineNumber: 413,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3253,29 +3258,29 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(Object.values(myDebts).reduce((a, b)=>a + b, 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 405,
+                                                                lineNumber: 414,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 403,
+                                                        lineNumber: 412,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                         className: "btn btn-gold btn-sm",
                                                         onClick: handleSettleAll,
                                                         disabled: loading,
-                                                        children: "⚡ Pay All"
+                                                        children: "Pay All"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 409,
+                                                        lineNumber: 418,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 402,
+                                                lineNumber: 411,
                                                 columnNumber: 21
                                             }, this),
                                             Object.entries(myDebts).map(([creditorUid, amount])=>{
@@ -3300,7 +3305,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 415,
+                                                            lineNumber: 424,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3314,7 +3319,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 419,
+                                                                    lineNumber: 428,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3325,13 +3330,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 420,
+                                                                    lineNumber: 429,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 418,
+                                                            lineNumber: 427,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3339,7 +3344,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 422,
+                                                            lineNumber: 431,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3349,26 +3354,26 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: "Pay Now"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 423,
+                                                            lineNumber: 432,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, creditorUid, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 414,
+                                                    lineNumber: 423,
                                                     columnNumber: 25
                                                 }, this);
                                             })
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 401,
+                                        lineNumber: 410,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 367,
+                                lineNumber: 376,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3376,10 +3381,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 style: {
                                     marginBottom: 7
                                 },
-                                children: "👥 Members"
+                                children: "Members"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 435,
+                                lineNumber: 444,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3395,14 +3400,14 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(m.name)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 439,
+                                                lineNumber: 448,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: m.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 440,
+                                                lineNumber: 449,
                                                 columnNumber: 19
                                             }, this),
                                             mid === uid && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3413,23 +3418,23 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "You"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 441,
+                                                lineNumber: 450,
                                                 columnNumber: 35
                                             }, this)
                                         ]
                                     }, mid, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 438,
+                                        lineNumber: 447,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 436,
+                                lineNumber: 445,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 445,
+                                lineNumber: 454,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3445,12 +3450,12 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: t.charAt(0).toUpperCase() + t.slice(1)
                                     }, t, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 450,
+                                        lineNumber: 459,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 448,
+                                lineNumber: 457,
                                 columnNumber: 13
                             }, this),
                             groupTab === 'balances' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3463,7 +3468,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Your Net Position in This Split"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 460,
+                                                lineNumber: 469,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3476,7 +3481,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Friends owe you"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 462,
+                                                        lineNumber: 471,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3491,13 +3496,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 463,
+                                                        lineNumber: 472,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 461,
+                                                lineNumber: 470,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3510,7 +3515,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "You owe others"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 468,
+                                                        lineNumber: 477,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3525,13 +3530,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 469,
+                                                        lineNumber: 478,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 467,
+                                                lineNumber: 476,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3548,7 +3553,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Net Balance"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 474,
+                                                        lineNumber: 483,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3563,19 +3568,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 475,
+                                                        lineNumber: 484,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 473,
+                                                lineNumber: 482,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 459,
+                                        lineNumber: 468,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3590,18 +3595,17 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Minimum Settlement Plan — Who Pays Whom"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 481,
+                                        lineNumber: 490,
                                         columnNumber: 17
                                     }, this),
                                     !plan.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "empty",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "empty-icon",
-                                                children: "✅"
+                                                className: "empty-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 485,
+                                                lineNumber: 494,
                                                 columnNumber: 42
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3609,13 +3613,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "All balances are zero — fully settled!"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 485,
-                                                columnNumber: 77
+                                                lineNumber: 494,
+                                                columnNumber: 76
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 485,
+                                        lineNumber: 494,
                                         columnNumber: 19
                                     }, this) : plan.map((o, i)=>{
                                         const fn = (g.members[o.from] || {}).name || o.from;
@@ -3631,10 +3635,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         color: 'var(--red)',
                                                         fontWeight: 700
                                                     } : {},
-                                                    children: isFrom ? '👤 You' : fn
+                                                    children: isFrom ? ' You' : fn
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 494,
+                                                    lineNumber: 503,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3645,7 +3649,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: "→"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 495,
+                                                    lineNumber: 504,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3654,10 +3658,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         color: 'var(--green)',
                                                         fontWeight: 700
                                                     } : {},
-                                                    children: isTo ? '👤 You' : tn
+                                                    children: isTo ? ' You' : tn
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 496,
+                                                    lineNumber: 505,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3665,7 +3669,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(o.amount)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 497,
+                                                    lineNumber: 506,
                                                     columnNumber: 25
                                                 }, this),
                                                 isFrom && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3675,20 +3679,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: "Settle"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 499,
+                                                    lineNumber: 508,
                                                     columnNumber: 27
                                                 }, this)
                                             ]
                                         }, i, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 493,
+                                            lineNumber: 502,
                                             columnNumber: 23
                                         }, this);
                                     })
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 458,
+                                lineNumber: 467,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'expenses' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3696,11 +3700,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     className: "empty",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "empty-icon",
-                                            children: "🧾"
+                                            className: "empty-icon"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 514,
+                                            lineNumber: 523,
                                             columnNumber: 42
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3708,13 +3711,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "No expenses yet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 514,
-                                            columnNumber: 78
+                                            lineNumber: 523,
+                                            columnNumber: 76
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 514,
+                                    lineNumber: 523,
                                     columnNumber: 19
                                 }, this) : Object.values(g.expenses || {}).sort((a, b)=>b.createdAt - a.createdAt).map((e, i)=>{
                                     const pn = (g.members[e.paidBy] || {}).name || e.paidBy;
@@ -3739,25 +3742,25 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: e.desc
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 528,
+                                                                lineNumber: 537,
                                                                 columnNumber: 31
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "exp-by",
                                                                 children: [
-                                                                    isDirect ? `💳 Paid via ${methodMap[e.paymentMethod] || e.paymentMethod}${e.paymentDetail ? ` (${e.paymentDetail})` : ''}` : isMe ? '✅ You paid' : `Paid by ${pn}`,
+                                                                    isDirect ? ` Paid via ${methodMap[e.paymentMethod] || e.paymentMethod}${e.paymentDetail ? ` (${e.paymentDetail})` : ''}` : isMe ? ' You paid' : `Paid by ${pn}`,
                                                                     ' · ',
                                                                     (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmtDate"])(e.createdAt)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 529,
+                                                                lineNumber: 538,
                                                                 columnNumber: 31
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 527,
+                                                        lineNumber: 536,
                                                         columnNumber: 29
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3767,7 +3770,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(e.amount)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 537,
+                                                                lineNumber: 546,
                                                                 columnNumber: 31
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3780,19 +3783,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 538,
+                                                                lineNumber: 547,
                                                                 columnNumber: 31
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 536,
+                                                        lineNumber: 545,
                                                         columnNumber: 29
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 526,
+                                                lineNumber: 535,
                                                 columnNumber: 27
                                             }, this),
                                             isMe && sw.filter((m)=>m !== uid).length > 0 && !isDirect && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3809,10 +3812,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             marginBottom: 4,
                                                             fontWeight: 700
                                                         },
-                                                        children: "💚 Collecting from:"
+                                                        children: " Collecting from:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 543,
+                                                        lineNumber: 552,
                                                         columnNumber: 31
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3853,7 +3856,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/components/ESplit.js",
-                                                                        lineNumber: 549,
+                                                                        lineNumber: 558,
                                                                         columnNumber: 39
                                                                     }, this),
                                                                     name,
@@ -3862,19 +3865,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, j, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 548,
+                                                                lineNumber: 557,
                                                                 columnNumber: 37
                                                             }, this);
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 544,
+                                                        lineNumber: 553,
                                                         columnNumber: 31
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 542,
+                                                lineNumber: 551,
                                                 columnNumber: 29
                                             }, this),
                                             !isMe && sw.includes(uid) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3885,24 +3888,24 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     fontWeight: 600
                                                 },
                                                 children: [
-                                                    "❤️ Your share: ",
+                                                    "Your share: ",
                                                     (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(pp)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 560,
+                                                lineNumber: 569,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, i, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 525,
+                                        lineNumber: 534,
                                         columnNumber: 25
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 512,
+                                lineNumber: 521,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'payments' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3910,11 +3913,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     className: "empty",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "empty-icon",
-                                            children: "💳"
+                                            className: "empty-icon"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 575,
+                                            lineNumber: 584,
                                             columnNumber: 42
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3922,13 +3924,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "No payments recorded yet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 575,
-                                            columnNumber: 78
+                                            lineNumber: 584,
+                                            columnNumber: 76
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 575,
+                                    lineNumber: 584,
                                     columnNumber: 19
                                 }, this) : Object.values(g.payments || {}).sort((a, b)=>b.createdAt - a.createdAt).map((p, i)=>{
                                     const fn = (g.members[p.from] || {}).name || '?';
@@ -3939,11 +3941,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         className: "activity-item",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "activity-icon",
-                                                children: "💳"
+                                                className: "activity-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 586,
+                                                lineNumber: 595,
                                                 columnNumber: 27
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3957,7 +3958,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 588,
+                                                        lineNumber: 597,
                                                         columnNumber: 29
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3969,13 +3970,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 589,
+                                                        lineNumber: 598,
                                                         columnNumber: 29
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 587,
+                                                lineNumber: 596,
                                                 columnNumber: 27
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3987,24 +3988,24 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 592,
+                                                    lineNumber: 601,
                                                     columnNumber: 29
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 591,
+                                                lineNumber: 600,
                                                 columnNumber: 27
                                             }, this)
                                         ]
                                     }, i, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 585,
+                                        lineNumber: 594,
                                         columnNumber: 25
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 573,
+                                lineNumber: 582,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'activity' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4023,11 +4024,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         className: "empty",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "empty-icon",
-                                                children: "📊"
+                                                className: "empty-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 611,
+                                                lineNumber: 620,
                                                 columnNumber: 67
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4035,13 +4035,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "No activity yet"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 611,
-                                                columnNumber: 103
+                                                lineNumber: 620,
+                                                columnNumber: 101
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 611,
+                                        lineNumber: 620,
                                         columnNumber: 44
                                     }, this);
                                     return acts.map((act, i)=>{
@@ -4054,10 +4054,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "activity-icon",
-                                                        children: act.isDirectPayment ? '💳' : '🧾'
+                                                        children: act.isDirectPayment ? '' : ''
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 619,
+                                                        lineNumber: 628,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4071,7 +4071,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 621,
+                                                                lineNumber: 630,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4085,13 +4085,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 622,
+                                                                lineNumber: 631,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 620,
+                                                        lineNumber: 629,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4100,18 +4100,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(act.amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 624,
+                                                            lineNumber: 633,
                                                             columnNumber: 32
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 624,
+                                                        lineNumber: 633,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 618,
+                                                lineNumber: 627,
                                                 columnNumber: 25
                                             }, this);
                                         } else {
@@ -4123,11 +4123,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 className: "activity-item",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "activity-icon",
-                                                        children: "💳"
+                                                        className: "activity-icon"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 634,
+                                                        lineNumber: 643,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4141,7 +4140,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 636,
+                                                                lineNumber: 645,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4153,13 +4152,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 637,
+                                                                lineNumber: 646,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 635,
+                                                        lineNumber: 644,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4171,18 +4170,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 640,
+                                                            lineNumber: 649,
                                                             columnNumber: 29
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 639,
+                                                        lineNumber: 648,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 633,
+                                                lineNumber: 642,
                                                 columnNumber: 25
                                             }, this);
                                         }
@@ -4190,19 +4189,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 })()
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 605,
+                                lineNumber: 614,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 285,
+                        lineNumber: 294,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 228,
+                lineNumber: 237,
                 columnNumber: 7
             }, this),
             showDirPay && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4220,10 +4219,10 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "pay-modal-title",
-                                    children: "💳 Record a Trip Payment"
+                                    children: "Record a Trip Payment"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 658,
+                                    lineNumber: 667,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4231,13 +4230,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Log a payment you made on behalf of the group — cost will be split equally"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 659,
+                                    lineNumber: 668,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 657,
+                            lineNumber: 666,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4247,7 +4246,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "What did you pay for? *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 662,
+                                    lineNumber: 671,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4257,13 +4256,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     placeholder: "e.g. Hotel, Lunch, Taxi, Tickets…"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 663,
+                                    lineNumber: 672,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 661,
+                            lineNumber: 670,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4273,7 +4272,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Total Amount (NPR) *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 666,
+                                    lineNumber: 675,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4285,13 +4284,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     step: "0.01"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 667,
+                                    lineNumber: 676,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 665,
+                            lineNumber: 674,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4301,7 +4300,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Payment Method *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 670,
+                                    lineNumber: 679,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4313,7 +4312,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "— Select —"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 672,
+                                            lineNumber: 681,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4321,7 +4320,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "eSewa"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 673,
+                                            lineNumber: 682,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4329,7 +4328,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "Bank Transfer"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 674,
+                                            lineNumber: 683,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4337,7 +4336,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "QR Code"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 675,
+                                            lineNumber: 684,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4345,19 +4344,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "Cash"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 676,
+                                            lineNumber: 685,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 671,
+                                    lineNumber: 680,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 669,
+                            lineNumber: 678,
                             columnNumber: 13
                         }, this),
                         (dpmMethod === 'esewa' || dpmMethod === 'bank') && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4367,7 +4366,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: dpmMethod === 'esewa' ? 'eSewa Phone Number' : 'Bank Account Number'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 681,
+                                    lineNumber: 690,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4377,13 +4376,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     placeholder: dpmMethod === 'esewa' ? '98XXXXXXXX' : 'Account number'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 682,
+                                    lineNumber: 691,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 680,
+                            lineNumber: 689,
                             columnNumber: 15
                         }, this),
                         parseFloat(dpmAmount) > 0 && memberUids.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4410,7 +4409,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 688,
+                                    lineNumber: 697,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4435,12 +4434,12 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             ]
                                         }, muid, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 693,
+                                            lineNumber: 702,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 691,
+                                    lineNumber: 700,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4452,7 +4451,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Each person pays:"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 698,
+                                    lineNumber: 707,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4465,13 +4464,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(parseFloat(dpmAmount) / memberUids.length))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 699,
+                                    lineNumber: 708,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 687,
+                            lineNumber: 696,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4486,13 +4485,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 marginBottom: 12
                             },
                             children: [
-                                "ℹ️ Your share (",
+                                "Your share (",
                                 g ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(parseFloat(dpmAmount || 0) / memberUids.length)) : '0.00',
                                 ") will be deducted from your wallet immediately."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 704,
+                            lineNumber: 713,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4508,7 +4507,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: loading ? 'Recording…' : 'Record Payment'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 708,
+                                    lineNumber: 717,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4520,30 +4519,30 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 711,
+                                    lineNumber: 720,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 707,
+                            lineNumber: 716,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/ESplit.js",
-                    lineNumber: 656,
+                    lineNumber: 665,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 655,
+                lineNumber: 664,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/ESplit.js",
-        lineNumber: 194,
+        lineNumber: 203,
         columnNumber: 5
     }, this);
 }
@@ -4564,7 +4563,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthPro
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Toast$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Toast.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/api.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * Connections Management Interface.
+ * Allows users to send, accept, decline, and remove friend requests using their unique @usernames.
+ */ 'use client';
 ;
 ;
 ;
@@ -4584,13 +4586,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
             showToast('Enter a @username', 'error');
             return;
         }
+        // Check if user is trying to add themselves
         if (username === (userData?.username || '').toLowerCase()) {
             showToast("You can't add yourself", 'error');
             return;
         }
         try {
             setLoading(true);
-            // resolve username → uid
             const snap = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["get"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'usernames/' + username));
             if (!snap.exists()) {
                 showToast('User @' + username + ' not found', 'error');
@@ -4599,7 +4601,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
             const targetUid = snap.val();
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["connectionAction"])('send', currentUser.uid, targetUid);
             setInviteInput('');
-            showToast('Request sent to @' + username + ' 📤', 'success');
+            showToast('Request sent to @' + username + ' ', 'success');
             onRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -4610,7 +4612,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
     const accept = async (uid)=>{
         try {
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["connectionAction"])('accept', currentUser.uid, uid);
-            showToast('Connected! 🎉', 'success');
+            showToast('Connected! ', 'success');
             onRefresh();
         } catch (e) {
             showToast(e.message, 'error');
@@ -4644,10 +4646,10 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "invite-title",
-                                children: "🔗 Connect with Someone"
+                                children: "Connect with Someone"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 45,
+                                lineNumber: 51,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4655,7 +4657,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 children: "Enter their @username to send a connection request"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 46,
+                                lineNumber: 52,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4669,7 +4671,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         onKeyDown: (e)=>e.key === 'Enter' && sendRequest()
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 48,
+                                        lineNumber: 54,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4679,19 +4681,19 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: loading ? '…' : 'Send Request'
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 54,
+                                        lineNumber: 60,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 47,
+                                lineNumber: 53,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Connections.js",
-                        lineNumber: 44,
+                        lineNumber: 50,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4705,10 +4707,10 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "section-title",
-                                        children: "📬 Incoming Requests"
+                                        children: "Incoming Requests"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 62,
+                                        lineNumber: 68,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4716,24 +4718,23 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: Object.keys(pendingRequests).length
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 63,
+                                        lineNumber: 69,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 61,
+                                lineNumber: 67,
                                 columnNumber: 11
                             }, this),
                             !Object.keys(pendingRequests).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "empty",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "empty-icon",
-                                        children: "📭"
+                                        className: "empty-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 66,
+                                        lineNumber: 72,
                                         columnNumber: 36
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4741,13 +4742,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: "No pending requests"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 66,
-                                        columnNumber: 72
+                                        lineNumber: 72,
+                                        columnNumber: 70
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 66,
+                                lineNumber: 72,
                                 columnNumber: 13
                             }, this) : Object.entries(pendingRequests).map(([uid, u])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "request-card",
@@ -4760,7 +4761,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(u.name)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 70,
+                                            lineNumber: 76,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4770,7 +4771,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     children: u.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 72,
+                                                    lineNumber: 78,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4781,13 +4782,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 73,
+                                                    lineNumber: 79,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 71,
+                                            lineNumber: 77,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4796,37 +4797,37 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     className: "btn btn-success btn-sm",
                                                     onClick: ()=>accept(uid),
-                                                    children: "✓ Accept"
+                                                    children: "Accept"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 76,
+                                                    lineNumber: 82,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     className: "btn btn-danger btn-sm",
                                                     onClick: ()=>decline(uid),
-                                                    children: "✕"
+                                                    children: "Decline"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 77,
+                                                    lineNumber: 83,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 75,
+                                            lineNumber: 81,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, uid, true, {
                                     fileName: "[project]/app/components/Connections.js",
-                                    lineNumber: 69,
+                                    lineNumber: 75,
                                     columnNumber: 15
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Connections.js",
-                        lineNumber: 60,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4837,10 +4838,10 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "section-title",
-                                        children: "👥 My Connections"
+                                        children: "My Connections"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 86,
+                                        lineNumber: 92,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4848,24 +4849,23 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: Object.keys(allConnections).length
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 87,
+                                        lineNumber: 93,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 85,
+                                lineNumber: 91,
                                 columnNumber: 11
                             }, this),
                             !Object.keys(allConnections).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "empty",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "empty-icon",
-                                        children: "🔗"
+                                        className: "empty-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 90,
+                                        lineNumber: 96,
                                         columnNumber: 36
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4873,13 +4873,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: "No connections yet"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 90,
-                                        columnNumber: 72
+                                        lineNumber: 96,
+                                        columnNumber: 70
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 90,
+                                lineNumber: 96,
                                 columnNumber: 13
                             }, this) : Object.entries(allConnections).map(([uid, u])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "connection-card",
@@ -4892,7 +4892,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(u.name)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 94,
+                                            lineNumber: 100,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4902,7 +4902,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     children: u.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 96,
+                                                    lineNumber: 102,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4913,13 +4913,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 97,
+                                                    lineNumber: 103,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 95,
+                                            lineNumber: 101,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4930,30 +4930,30 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                 children: "Remove"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Connections.js",
-                                                lineNumber: 100,
+                                                lineNumber: 106,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 99,
+                                            lineNumber: 105,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, uid, true, {
                                     fileName: "[project]/app/components/Connections.js",
-                                    lineNumber: 93,
+                                    lineNumber: 99,
                                     columnNumber: 15
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Connections.js",
-                        lineNumber: 84,
+                        lineNumber: 90,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Connections.js",
-                lineNumber: 43,
+                lineNumber: 49,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4968,26 +4968,25 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 className: "section-header",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "section-title",
-                                    children: "📤 Sent Requests"
+                                    children: "Sent Requests"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/Connections.js",
-                                    lineNumber: 110,
+                                    lineNumber: 116,
                                     columnNumber: 43
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 110,
+                                lineNumber: 116,
                                 columnNumber: 11
                             }, this),
                             !Object.keys(sentRequests).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "empty",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "empty-icon",
-                                        children: "⏳"
+                                        className: "empty-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 112,
+                                        lineNumber: 118,
                                         columnNumber: 36
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4995,13 +4994,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: "No sent requests"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 112,
-                                        columnNumber: 71
+                                        lineNumber: 118,
+                                        columnNumber: 70
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 112,
+                                lineNumber: 118,
                                 columnNumber: 13
                             }, this) : Object.entries(sentRequests).map(([uid, u])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "connection-card",
@@ -5014,7 +5013,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(u.name)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 116,
+                                            lineNumber: 122,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5024,7 +5023,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     children: u.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 118,
+                                                    lineNumber: 124,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5035,13 +5034,13 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Connections.js",
-                                                    lineNumber: 119,
+                                                    lineNumber: 125,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 117,
+                                            lineNumber: 123,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5051,24 +5050,24 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                                 children: "Pending"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Connections.js",
-                                                lineNumber: 121,
+                                                lineNumber: 127,
                                                 columnNumber: 47
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Connections.js",
-                                            lineNumber: 121,
+                                            lineNumber: 127,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, uid, true, {
                                     fileName: "[project]/app/components/Connections.js",
-                                    lineNumber: 115,
+                                    lineNumber: 121,
                                     columnNumber: 15
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Connections.js",
-                        lineNumber: 109,
+                        lineNumber: 115,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5079,10 +5078,10 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 style: {
                                     marginBottom: 10
                                 },
-                                children: "🪪 My Profile Card"
+                                children: "My Profile Card"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 128,
+                                lineNumber: 134,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5096,17 +5095,6 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
-                                            fontSize: 34,
-                                            marginBottom: 7
-                                        },
-                                        children: "😊"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 130,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        style: {
                                             fontSize: 15,
                                             fontWeight: 700,
                                             color: 'var(--text)'
@@ -5114,7 +5102,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: userData?.name
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 131,
+                                        lineNumber: 136,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5130,7 +5118,7 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 132,
+                                        lineNumber: 137,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5142,31 +5130,31 @@ function Connections({ allConnections, pendingRequests, sentRequests, onRefresh 
                                         children: "Share your @username to let friends connect with you"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Connections.js",
-                                        lineNumber: 135,
+                                        lineNumber: 140,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Connections.js",
-                                lineNumber: 129,
+                                lineNumber: 135,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Connections.js",
-                        lineNumber: 127,
+                        lineNumber: 133,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Connections.js",
-                lineNumber: 108,
+                lineNumber: 114,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/Connections.js",
-        lineNumber: 42,
+        lineNumber: 48,
         columnNumber: 5
     }, this);
 }
@@ -5184,7 +5172,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthPro
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Toast$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Toast.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/api.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * Gifts Feature Component.
+ * Enables users to send and receive virtual gift cards utilizing their wallet balance.
+ */ 'use client';
 ;
 ;
 ;
@@ -5194,43 +5185,51 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2
 const GIFT_CARDS = [
     {
         id: 'birthday',
+        name: 'Birthday Card',
         emoji: '🎂',
-        name: 'Birthday Card'
+        color: '#ff6b6b'
     },
     {
         id: 'coffee',
+        name: 'Coffee Gift',
         emoji: '☕',
-        name: 'Coffee Gift'
+        color: '#a0522d'
     },
     {
         id: 'food',
+        name: 'Food Treat',
         emoji: '🍕',
-        name: 'Food Treat'
+        color: '#ff8c00'
     },
     {
         id: 'movie',
+        name: 'Movie Night',
         emoji: '🎬',
-        name: 'Movie Night'
+        color: '#9932cc'
     },
     {
         id: 'shopping',
+        name: 'Shopping Card',
         emoji: '🛍️',
-        name: 'Shopping Card'
+        color: '#e91e8c'
     },
     {
         id: 'travel',
+        name: 'Travel Voucher',
         emoji: '✈️',
-        name: 'Travel Voucher'
+        color: '#00adb5'
     },
     {
         id: 'gaming',
+        name: 'Gaming Gift',
         emoji: '🎮',
-        name: 'Gaming Gift'
+        color: '#22c55e'
     },
     {
         id: 'flower',
+        name: 'Flower Bouquet',
         emoji: '💐',
-        name: 'Flower Bouquet'
+        color: '#f06292'
     }
 ];
 function Gifts({ allConnections }) {
@@ -5265,7 +5264,7 @@ function Gifts({ allConnections }) {
                 to: giftTo,
                 amount,
                 cardId: selected.id,
-                cardEmoji: selected.emoji,
+                cardColor: selected.color,
                 cardName: selected.name,
                 message: giftMsg
             });
@@ -5275,8 +5274,7 @@ function Gifts({ allConnections }) {
                 }));
             setGiftAmount('');
             setGiftMsg('');
-            showToast(`${selected.emoji} Gift sent to ${allConnections[giftTo]?.name}! 🎉`, 'success');
-            // refresh history
+            showToast(`${selected.name} sent to ${allConnections[giftTo]?.name}! `, 'success');
             const updated = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchGifts"])(currentUser.uid);
             setHistory(updated);
         } catch (e) {
@@ -5302,10 +5300,10 @@ function Gifts({ allConnections }) {
                                 style: {
                                     marginBottom: 3
                                 },
-                                children: "🎁 Send a Gift Card"
+                                children: " Send a Gift Card"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 68,
+                                lineNumber: 71,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5317,57 +5315,48 @@ function Gifts({ allConnections }) {
                                 children: "Choose a card, set amount, add a message"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 69,
+                                lineNumber: 72,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "fgrp",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        children: "Choose Gift Card"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 72,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "gift-cards-grid",
-                                        children: GIFT_CARDS.map((gc)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: `gift-card-opt${selected.id === gc.id ? ' selected' : ''}`,
-                                                onClick: ()=>setSelected(gc),
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "gift-card-emoji",
-                                                        children: gc.emoji
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/Gifts.js",
-                                                        lineNumber: 78,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "gift-card-name",
-                                                        children: gc.name
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/Gifts.js",
-                                                        lineNumber: 79,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, gc.id, true, {
+                                className: "gift-cards-grid",
+                                children: GIFT_CARDS.map((gc)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: `gift-card-opt${selected.id === gc.id ? ' selected' : ''}`,
+                                        onClick: ()=>setSelected(gc),
+                                        style: {
+                                            borderColor: selected.id === gc.id ? gc.color : undefined,
+                                            background: selected.id === gc.id ? `${gc.color}18` : undefined
+                                        },
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "gift-card-icon",
+                                                style: {
+                                                    backgroundColor: gc.color
+                                                },
+                                                children: gc.emoji
+                                            }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 75,
-                                                columnNumber: 17
-                                            }, this))
-                                    }, void 0, false, {
+                                                lineNumber: 83,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "gift-card-name",
+                                                children: gc.name
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/Gifts.js",
+                                                lineNumber: 86,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, gc.id, true, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 73,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                        lineNumber: 76,
+                                        columnNumber: 17
+                                    }, this))
+                            }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 71,
-                                columnNumber: 11
+                                lineNumber: 74,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "fgrp",
@@ -5376,7 +5365,7 @@ function Gifts({ allConnections }) {
                                         children: "Send To"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 86,
+                                        lineNumber: 92,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -5388,7 +5377,7 @@ function Gifts({ allConnections }) {
                                                 children: "— Select a connection —"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 88,
+                                                lineNumber: 94,
                                                 columnNumber: 15
                                             }, this),
                                             Object.entries(allConnections).map(([uid, u])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -5401,19 +5390,19 @@ function Gifts({ allConnections }) {
                                                     ]
                                                 }, uid, true, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 90,
+                                                    lineNumber: 96,
                                                     columnNumber: 17
                                                 }, this))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 87,
+                                        lineNumber: 93,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 85,
+                                lineNumber: 91,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5426,7 +5415,7 @@ function Gifts({ allConnections }) {
                                                 children: "Amount (NPR)"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 97,
+                                                lineNumber: 103,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -5437,13 +5426,13 @@ function Gifts({ allConnections }) {
                                                 min: "0"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 98,
+                                                lineNumber: 104,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 96,
+                                        lineNumber: 102,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5453,29 +5442,29 @@ function Gifts({ allConnections }) {
                                                 children: "Message (optional)"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 101,
+                                                lineNumber: 107,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "text",
                                                 value: giftMsg,
                                                 onChange: (e)=>setGiftMsg(e.target.value),
-                                                placeholder: "Happy birthday! 🎉"
+                                                placeholder: "Happy birthday! "
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Gifts.js",
-                                                lineNumber: 102,
+                                                lineNumber: 108,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 100,
+                                        lineNumber: 106,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 95,
+                                lineNumber: 101,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5493,13 +5482,13 @@ function Gifts({ allConnections }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData?.balance || 0)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 107,
+                                        lineNumber: 113,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 106,
+                                lineNumber: 112,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5509,16 +5498,16 @@ function Gifts({ allConnections }) {
                                 },
                                 onClick: handleSend,
                                 disabled: loading,
-                                children: loading ? 'Sending…' : '🎁 Send Gift Card'
+                                children: loading ? 'Sending…' : ' Send Gift Card'
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 110,
+                                lineNumber: 116,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 67,
+                        lineNumber: 70,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5528,26 +5517,25 @@ function Gifts({ allConnections }) {
                                 className: "section-header",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "section-title",
-                                    children: "📬 Gift History"
+                                    children: " Gift History"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/Gifts.js",
-                                    lineNumber: 116,
+                                    lineNumber: 122,
                                     columnNumber: 43
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 116,
+                                lineNumber: 122,
                                 columnNumber: 11
                             }, this),
                             !history.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "empty",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "empty-icon",
-                                        children: "🎁"
+                                        className: "empty-icon"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 118,
+                                        lineNumber: 124,
                                         columnNumber: 36
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5555,13 +5543,13 @@ function Gifts({ allConnections }) {
                                         children: "No gifts yet"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Gifts.js",
-                                        lineNumber: 118,
-                                        columnNumber: 72
+                                        lineNumber: 124,
+                                        columnNumber: 70
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 118,
+                                lineNumber: 124,
                                 columnNumber: 13
                             }, this) : history.slice(0, 15).map((g, i)=>{
                                 const isSent = g.from === currentUser?.uid;
@@ -5569,13 +5557,14 @@ function Gifts({ allConnections }) {
                                     className: "gift-history-item",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "gift-history-icon",
                                             style: {
-                                                fontSize: 22
+                                                backgroundColor: g.cardColor || '#ccc'
                                             },
-                                            children: g.cardEmoji
+                                            children: GIFT_CARDS.find((c)=>c.id === g.cardId)?.emoji || '🎁'
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/Gifts.js",
-                                            lineNumber: 124,
+                                            lineNumber: 130,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5592,7 +5581,7 @@ function Gifts({ allConnections }) {
                                                     children: g.cardName
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 126,
+                                                    lineNumber: 134,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5608,7 +5597,7 @@ function Gifts({ allConnections }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 127,
+                                                    lineNumber: 135,
                                                     columnNumber: 21
                                                 }, this),
                                                 g.message && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5625,13 +5614,13 @@ function Gifts({ allConnections }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 130,
+                                                    lineNumber: 138,
                                                     columnNumber: 35
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Gifts.js",
-                                            lineNumber: 125,
+                                            lineNumber: 133,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5647,7 +5636,7 @@ function Gifts({ allConnections }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 133,
+                                                    lineNumber: 141,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -5658,50 +5647,56 @@ function Gifts({ allConnections }) {
                                                     children: isSent ? 'Sent' : 'Received'
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/Gifts.js",
-                                                    lineNumber: 134,
+                                                    lineNumber: 142,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/Gifts.js",
-                                            lineNumber: 132,
+                                            lineNumber: 140,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, i, true, {
                                     fileName: "[project]/app/components/Gifts.js",
-                                    lineNumber: 123,
+                                    lineNumber: 129,
                                     columnNumber: 17
                                 }, this);
                             })
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 115,
+                        lineNumber: 121,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Gifts.js",
-                lineNumber: 66,
+                lineNumber: 69,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "gift-preview",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "gift-preview-orb"
+                        className: "gift-preview-orb",
+                        style: {
+                            background: `radial-gradient(circle, ${selected.color}40, transparent 60%)`
+                        }
                     }, void 0, false, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 147,
+                        lineNumber: 155,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "gift-preview-emoji",
+                        className: "gift-preview-icon",
+                        style: {
+                            backgroundColor: selected.color
+                        },
                         children: selected.emoji
                     }, void 0, false, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 148,
+                        lineNumber: 156,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5709,7 +5704,7 @@ function Gifts({ allConnections }) {
                         children: selected.name
                     }, void 0, false, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 149,
+                        lineNumber: 159,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5717,7 +5712,7 @@ function Gifts({ allConnections }) {
                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(parseFloat(giftAmount) || 0)
                     }, void 0, false, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 150,
+                        lineNumber: 160,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5728,7 +5723,7 @@ function Gifts({ allConnections }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 151,
+                        lineNumber: 161,
                         columnNumber: 9
                     }, this),
                     giftMsg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5740,7 +5735,7 @@ function Gifts({ allConnections }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 152,
+                        lineNumber: 162,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5761,7 +5756,7 @@ function Gifts({ allConnections }) {
                                 children: "From"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 154,
+                                lineNumber: 164,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5776,25 +5771,25 @@ function Gifts({ allConnections }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Gifts.js",
-                                lineNumber: 155,
+                                lineNumber: 165,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Gifts.js",
-                        lineNumber: 153,
+                        lineNumber: 163,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Gifts.js",
-                lineNumber: 146,
+                lineNumber: 154,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/Gifts.js",
-        lineNumber: 65,
+        lineNumber: 68,
         columnNumber: 5
     }, this);
 }
@@ -5839,7 +5834,7 @@ function Profile({ allGroups, allConnections }) {
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(userData?.name || 'U')
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 16,
+                                lineNumber: 17,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5849,7 +5844,7 @@ function Profile({ allGroups, allConnections }) {
                                         children: userData?.name
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 18,
+                                        lineNumber: 19,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5860,7 +5855,7 @@ function Profile({ allGroups, allConnections }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 19,
+                                        lineNumber: 20,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5868,19 +5863,19 @@ function Profile({ allGroups, allConnections }) {
                                         children: currentUser?.email
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 20,
+                                        lineNumber: 21,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 17,
+                                lineNumber: 18,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Profile.js",
-                        lineNumber: 15,
+                        lineNumber: 16,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5894,7 +5889,7 @@ function Profile({ allGroups, allConnections }) {
                                         children: "Balance"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 25,
+                                        lineNumber: 26,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5905,13 +5900,13 @@ function Profile({ allGroups, allConnections }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(userData?.balance || 0)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 26,
+                                        lineNumber: 27,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 24,
+                                lineNumber: 25,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5922,7 +5917,7 @@ function Profile({ allGroups, allConnections }) {
                                         children: "Member Since"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 29,
+                                        lineNumber: 30,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5930,13 +5925,13 @@ function Profile({ allGroups, allConnections }) {
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmtDate"])(userData?.createdAt)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 30,
+                                        lineNumber: 31,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 28,
+                                lineNumber: 29,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5947,7 +5942,7 @@ function Profile({ allGroups, allConnections }) {
                                         children: "E-Splits"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 33,
+                                        lineNumber: 34,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5955,13 +5950,13 @@ function Profile({ allGroups, allConnections }) {
                                         children: Object.keys(allGroups).length
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 34,
+                                        lineNumber: 35,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 32,
+                                lineNumber: 33,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5972,7 +5967,7 @@ function Profile({ allGroups, allConnections }) {
                                         children: "Connections"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 37,
+                                        lineNumber: 38,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5980,25 +5975,25 @@ function Profile({ allGroups, allConnections }) {
                                         children: Object.keys(allConnections).length
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 38,
+                                        lineNumber: 39,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 36,
+                                lineNumber: 37,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Profile.js",
-                        lineNumber: 23,
+                        lineNumber: 24,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Profile.js",
-                lineNumber: 14,
+                lineNumber: 15,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6016,10 +6011,10 @@ function Profile({ allGroups, allConnections }) {
                                 style: {
                                     marginBottom: 10
                                 },
-                                children: "💳 Payment Methods"
+                                children: "Payment Methods"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 45,
+                                lineNumber: 47,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6041,10 +6036,10 @@ function Profile({ allGroups, allConnections }) {
                                                     fontWeight: 600,
                                                     fontSize: 12
                                                 },
-                                                children: "Visa •••• 4829"
+                                                children: "Primary Bank Account"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Profile.js",
-                                                lineNumber: 48,
+                                                lineNumber: 50,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6053,16 +6048,16 @@ function Profile({ allGroups, allConnections }) {
                                                     color: 'var(--text3)',
                                                     marginTop: 1
                                                 },
-                                                children: "Primary · Expires 12/28"
+                                                children: "Linked Account"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Profile.js",
-                                                lineNumber: 49,
+                                                lineNumber: 51,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 47,
+                                        lineNumber: 49,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6070,13 +6065,13 @@ function Profile({ allGroups, allConnections }) {
                                         children: "Primary"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 51,
+                                        lineNumber: 53,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 46,
+                                lineNumber: 48,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6097,10 +6092,10 @@ function Profile({ allGroups, allConnections }) {
                                                     fontWeight: 600,
                                                     fontSize: 12
                                                 },
-                                                children: "E-Split Wallet"
+                                                children: "Internal Wallet"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/Profile.js",
-                                                lineNumber: 55,
+                                                lineNumber: 57,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6115,13 +6110,13 @@ function Profile({ allGroups, allConnections }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/Profile.js",
-                                                lineNumber: 56,
+                                                lineNumber: 58,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 54,
+                                        lineNumber: 56,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6129,19 +6124,19 @@ function Profile({ allGroups, allConnections }) {
                                         children: "Digital"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 58,
+                                        lineNumber: 60,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 53,
+                                lineNumber: 55,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Profile.js",
-                        lineNumber: 44,
+                        lineNumber: 46,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6152,10 +6147,10 @@ function Profile({ allGroups, allConnections }) {
                                 style: {
                                     marginBottom: 10
                                 },
-                                children: "⚙️ Settings"
+                                children: "Settings"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 63,
+                                lineNumber: 66,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6164,35 +6159,7 @@ function Profile({ allGroups, allConnections }) {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "settings-row-left",
-                                        children: "🔔 Notifications"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 65,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        style: {
-                                            color: 'var(--text3)'
-                                        },
-                                        children: "›"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 65,
-                                        columnNumber: 70
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 64,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "settings-row",
-                                onClick: ()=>showToast('Privacy — coming soon', 'info'),
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "settings-row-left",
-                                        children: "🔒 Privacy"
+                                        children: "Notifications"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
                                         lineNumber: 68,
@@ -6206,7 +6173,7 @@ function Profile({ allGroups, allConnections }) {
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
                                         lineNumber: 68,
-                                        columnNumber: 64
+                                        columnNumber: 67
                                     }, this)
                                 ]
                             }, void 0, true, {
@@ -6216,11 +6183,11 @@ function Profile({ allGroups, allConnections }) {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "settings-row",
-                                onClick: ()=>showToast('Help — coming soon', 'info'),
+                                onClick: ()=>showToast('Privacy — coming soon', 'info'),
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "settings-row-left",
-                                        children: "❓ Help & Support"
+                                        children: "Privacy"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
                                         lineNumber: 71,
@@ -6234,12 +6201,40 @@ function Profile({ allGroups, allConnections }) {
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
                                         lineNumber: 71,
-                                        columnNumber: 70
+                                        columnNumber: 61
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
                                 lineNumber: 70,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "settings-row",
+                                onClick: ()=>showToast('Help — coming soon', 'info'),
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "settings-row-left",
+                                        children: "Help & Support"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/Profile.js",
+                                        lineNumber: 74,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        style: {
+                                            color: 'var(--text3)'
+                                        },
+                                        children: "›"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/Profile.js",
+                                        lineNumber: 74,
+                                        columnNumber: 68
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/Profile.js",
+                                lineNumber: 73,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6258,10 +6253,10 @@ function Profile({ allGroups, allConnections }) {
                                         style: {
                                             color: 'var(--red)'
                                         },
-                                        children: "🚪 Logout"
+                                        children: "Logout"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 76,
+                                        lineNumber: 80,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6271,25 +6266,25 @@ function Profile({ allGroups, allConnections }) {
                                         children: "›"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/Profile.js",
-                                        lineNumber: 77,
+                                        lineNumber: 81,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/Profile.js",
-                                lineNumber: 73,
+                                lineNumber: 77,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/Profile.js",
-                        lineNumber: 62,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Profile.js",
-                lineNumber: 43,
+                lineNumber: 44,
                 columnNumber: 7
             }, this)
         ]
@@ -6320,7 +6315,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ESplit$
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Connections$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Connections.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Gifts$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Gifts.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Profile$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Profile.js [app-ssr] (ecmascript)");
-'use client';
+/**
+ * Main Application Shell.
+ * Manages global state, real-time Firebase subscriptions, and navigation across core modules.
+ */ 'use client';
 ;
 ;
 ;
@@ -6343,19 +6341,21 @@ function AppShell() {
     const [triggerNew, setTriggerNew] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [refreshKey, setRefreshKey] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const refreshAll = ()=>setRefreshKey((k)=>k + 1);
-    // ── real-time Firebase listeners ─────────────────────────────────────
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (!currentUser) return;
         const uid = currentUser.uid;
+        // Set up real-time database listeners for group data
         const u1 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["onValue"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], 'groups'), (snap)=>{
             const groups = {};
             if (snap.exists()) {
                 Object.entries(snap.val()).forEach(([gid, g])=>{
+                    // Only include groups where the current user is a member
                     if (g.members?.[uid]) groups[gid] = g;
                 });
             }
             setAllGroups(groups);
         });
+        // Fetch all accepted connections for the user
         const u2 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["onValue"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], `connections/${uid}/accepted`), async (snap)=>{
             const conns = {};
             if (snap.exists()) {
@@ -6366,6 +6366,7 @@ function AppShell() {
             }
             setAllConnections(conns);
         });
+        // Fetch all incoming connection requests
         const u3 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["onValue"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], `connections/${uid}/incoming`), async (snap)=>{
             const reqs = {};
             if (snap.exists()) {
@@ -6376,6 +6377,7 @@ function AppShell() {
             }
             setPendingReqs(reqs);
         });
+        // Fetch all sent connection requests
         const u4 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["onValue"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$database$2f$dist$2f$node$2d$esm$2f$index$2e$node$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ref"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebase$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["db"], `connections/${uid}/sent`), async (snap)=>{
             const sent = {};
             if (snap.exists()) {
@@ -6396,6 +6398,7 @@ function AppShell() {
         currentUser,
         refreshKey
     ]);
+    // Handle navigation tab changes
     const handleNav = (page, openNew = false)=>{
         setActivePage(page);
         if (page === 'esplit' && openNew) setTriggerNew(true);
@@ -6409,7 +6412,7 @@ function AppShell() {
                 pendingCount: Object.keys(pendingReqs).length
             }, void 0, false, {
                 fileName: "[project]/app/components/AppShell.js",
-                lineNumber: 85,
+                lineNumber: 94,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6420,7 +6423,7 @@ function AppShell() {
                         onNav: handleNav
                     }, void 0, false, {
                         fileName: "[project]/app/components/AppShell.js",
-                        lineNumber: 93,
+                        lineNumber: 102,
                         columnNumber: 11
                     }, this),
                     activePage === 'esplit' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ESplit$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -6431,7 +6434,7 @@ function AppShell() {
                         onGroupsRefresh: refreshAll
                     }, void 0, false, {
                         fileName: "[project]/app/components/AppShell.js",
-                        lineNumber: 96,
+                        lineNumber: 105,
                         columnNumber: 11
                     }, this),
                     activePage === 'connections' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Connections$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -6441,14 +6444,14 @@ function AppShell() {
                         onRefresh: refreshAll
                     }, void 0, false, {
                         fileName: "[project]/app/components/AppShell.js",
-                        lineNumber: 105,
+                        lineNumber: 114,
                         columnNumber: 11
                     }, this),
                     activePage === 'gifts' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Gifts$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                         allConnections: allConnections
                     }, void 0, false, {
                         fileName: "[project]/app/components/AppShell.js",
-                        lineNumber: 113,
+                        lineNumber: 122,
                         columnNumber: 11
                     }, this),
                     activePage === 'profile' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Profile$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -6456,13 +6459,13 @@ function AppShell() {
                         allConnections: allConnections
                     }, void 0, false, {
                         fileName: "[project]/app/components/AppShell.js",
-                        lineNumber: 116,
+                        lineNumber: 125,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/AppShell.js",
-                lineNumber: 91,
+                lineNumber: 100,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$BottomNav$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -6470,13 +6473,13 @@ function AppShell() {
                 onNav: handleNav
             }, void 0, false, {
                 fileName: "[project]/app/components/AppShell.js",
-                lineNumber: 121,
+                lineNumber: 130,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/AppShell.js",
-        lineNumber: 83,
+        lineNumber: 92,
         columnNumber: 5
     }, this);
 }
@@ -6499,16 +6502,17 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AppShel
 ;
 function Home() {
     const { currentUser, userData, loading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthProvider$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
+    //  loading screen
     if (loading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "loading-screen",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "loader-logo",
-                    children: "⚡ E-Split"
+                    children: " E-Split"
                 }, void 0, false, {
                     fileName: "[project]/app/page.js",
-                    lineNumber: 12,
+                    lineNumber: 13,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6516,31 +6520,32 @@ function Home() {
                     children: "Social Expense Sharing"
                 }, void 0, false, {
                     fileName: "[project]/app/page.js",
-                    lineNumber: 13,
+                    lineNumber: 14,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "loader-ring"
                 }, void 0, false, {
                     fileName: "[project]/app/page.js",
-                    lineNumber: 14,
+                    lineNumber: 15,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/page.js",
-            lineNumber: 11,
+            lineNumber: 12,
             columnNumber: 7
         }, this);
     }
+    //redirect if not authenticated, otherwise show app shell
     if (!currentUser || !userData) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AuthPage$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
         fileName: "[project]/app/page.js",
-        lineNumber: 19,
+        lineNumber: 21,
         columnNumber: 41
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AppShell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
         fileName: "[project]/app/page.js",
-        lineNumber: 20,
+        lineNumber: 22,
         columnNumber: 10
     }, this);
 }

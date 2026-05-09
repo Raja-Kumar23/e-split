@@ -50,9 +50,10 @@ __turbopack_context__.s([
     "dbUpdate",
     ()=>dbUpdate
 ]);
-// Server-side Firebase Database access via REST API
-// Used by all API routes — no client SDK on the server
-const DB_URL = 'https://kslcaptain-default-rtdb.firebaseio.com';
+/**
+ * Minimal Firebase admin module for server-side usage.
+ * Uses REST API to interface with the database.
+ */ const DB_URL = ("TURBOPACK compile-time value", "https://kslcaptain-default-rtdb.firebaseio.com");
 async function dbGet(path) {
     const res = await fetch(`${DB_URL}/${path}.json`);
     if (!res.ok) throw new Error(`DB GET failed: ${path} ${res.status}`);
@@ -78,7 +79,7 @@ async function dbPush(path, data) {
         body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error(`DB PUSH failed: ${path} ${res.status}`);
-    return res.json(); // returns { name: "-NEWKEY" }
+    return res.json();
 }
 async function dbUpdate(path, data) {
     const res = await fetch(`${DB_URL}/${path}.json`, {
@@ -104,16 +105,9 @@ async function dbDelete(path) {
 "use strict";
 
 /**
- * E-Split Calculation Engine
- * All money math is centralised here. Used on both server (API routes)
- * and client (display components).
- *
- * PRINCIPLE
- *  - Every expense has a payer (paidBy) and a list of participants (splitWith).
- *  - The payer fronted the full amount; each participant (including the payer)
- *    owes their equal share.
- *  - Net balance: POSITIVE = others owe you | NEGATIVE = you owe others
- *  - Payments recorded in the `payments` node reduce outstanding balances.
+ * Core Financial Calculation Engine.
+ * Manages expense splitting, balance computation, and settlement algorithms.
+ * Used consistently across server routes and client components.
  */ __turbopack_context__.s([
     "AVATAR_COLORS",
     ()=>AVATAR_COLORS,
@@ -165,11 +159,7 @@ const generateUsername = (name)=>{
     const clean = (name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '');
     return (clean.slice(0, 8) || 'user') + Math.floor(100 + Math.random() * 900);
 };
-// ─── core balance calculations ──────────────────────────────────────────────
-/**
- * Resolve the participant list for one expense.
- * Falls back to all group members when splitWith is empty/missing.
- */ function resolveParticipants(exp, allMemberUids) {
+function resolveParticipants(exp, allMemberUids) {
     if (Array.isArray(exp.splitWith) && exp.splitWith.length > 0) {
         return exp.splitWith;
     }
@@ -178,26 +168,24 @@ const generateUsername = (name)=>{
 function computeRawBalances(group) {
     const memberUids = Object.keys(group.members || {});
     const bals = {};
+    // Set initial balance to zero
     memberUids.forEach((m)=>{
         bals[m] = 0;
     });
-    // ── Expenses ──
     for (const exp of Object.values(group.expenses || {})){
         if (!bals.hasOwnProperty(exp.paidBy)) continue;
         const sw = resolveParticipants(exp, memberUids);
         if (sw.length === 0) continue;
+        // Calculate share for each person
         const share = round2(exp.amount / sw.length);
-        // Payer gets credited for every OTHER participant's share
         const otherCount = sw.filter((m)=>m !== exp.paidBy).length;
         bals[exp.paidBy] = round2(bals[exp.paidBy] + otherCount * share);
-        // Each non-payer participant is debited their share
         for (const mid of sw){
             if (mid !== exp.paidBy && bals.hasOwnProperty(mid)) {
                 bals[mid] = round2(bals[mid] - share);
             }
         }
     }
-    // ── Payments (settlements already made) ──
     for (const pay of Object.values(group.payments || {})){
         if (bals.hasOwnProperty(pay.from)) bals[pay.from] = round2(bals[pay.from] - pay.amount);
         if (bals.hasOwnProperty(pay.to)) bals[pay.to] = round2(bals[pay.to] + pay.amount);
@@ -218,13 +206,11 @@ function getMyDebts(group, uid) {
         const share = round2(exp.amount / sw.length);
         owed[exp.paidBy] = round2((owed[exp.paidBy] || 0) + share);
     }
-    // Subtract payments I've already made
     for (const pay of Object.values(group.payments || {})){
         if (pay.from === uid && pay.to) {
             owed[pay.to] = round2((owed[pay.to] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding debts
     const result = {};
     for (const [creditor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[creditor] = round2(amt);
@@ -245,13 +231,11 @@ function getMyCredits(group, uid) {
             }
         }
     }
-    // Subtract payments already received
     for (const pay of Object.values(group.payments || {})){
         if (pay.to === uid && pay.from) {
             owed[pay.from] = round2((owed[pay.from] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding credits
     const result = {};
     for (const [debtor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[debtor] = round2(amt);
@@ -259,9 +243,10 @@ function getMyCredits(group, uid) {
     return result;
 }
 function computeSettlementPlan(group) {
+    // Calculate minimum settlement transactions
     const bals = computeRawBalances(group);
-    const creditors = []; // uid owes money to others  (balance > 0)
-    const debtors = []; // uid is owed money by others(balance < 0)
+    const creditors = []; // Users who are owed money
+    const debtors = []; // Users who owe money
     for (const [uid, bal] of Object.entries(bals)){
         if (bal > 0.005) creditors.push({
             uid,
@@ -364,9 +349,8 @@ __turbopack_context__.s([
     ()=>POST
 ]);
 /**
- * /api/gifts
- * GET  ?uid=xxx             → fetch gifts sent or received by uid
- * POST { from, to, amount, cardId, cardEmoji, cardName, message? } → send gift
+ * API route for processing and retrieving user gifts.
+ * Supports balance deduction and connection validation prior to transfer.
  */ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/firebaseAdmin.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/apiHelpers.js [app-route] (ecmascript)");
@@ -392,28 +376,26 @@ async function GET(request) {
 async function POST(request) {
     try {
         const body = await request.json();
-        const { from, to, amount, cardId, cardEmoji, cardName, message } = body;
-        // ── Validation ──
+        const { from, to, amount, cardId, cardColor, cardName, message } = body;
         if (!from || !to) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('from and to are required');
         if (from === to) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Cannot send gift to yourself');
         if (!amount || isNaN(amount) || amount <= 0) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Amount must be a positive number');
         if (!cardId || !cardName) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Gift card details required');
         const parsedAmount = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])(parseFloat(amount));
-        // ── Fetch both users ──
+        // Get user details for sender and receiver
         const [fromUser, toUser] = await Promise.all([
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])(`users/${from}`),
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])(`users/${to}`)
         ]);
         if (!fromUser) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Sender not found', 404);
         if (!toUser) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Recipient not found', 404);
-        // ── Check sender balance ──
+        // Check if sender has enough balance
         if ((fromUser.balance || 0) < parsedAmount) {
             return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])(`Insufficient balance. Have ${(fromUser.balance || 0).toFixed(2)}, need ${parsedAmount.toFixed(2)}`);
         }
-        // ── Check they are connected ──
+        // strangers can't send gifts, they must be  be connections
         const connection = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])(`connections/${from}/accepted/${to}`);
         if (!connection) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('You can only send gifts to your connections');
-        // ── Transfer wallets ──
         const fromNewBal = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])((fromUser.balance || 0) - parsedAmount);
         const toNewBal = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])((toUser.balance || 0) + parsedAmount);
         await Promise.all([
@@ -424,7 +406,6 @@ async function POST(request) {
                 balance: toNewBal
             })
         ]);
-        // ── Record gift ──
         const gift = {
             from,
             fromName: fromUser.name,
@@ -433,7 +414,7 @@ async function POST(request) {
             toName: toUser.name,
             toUsername: toUser.username || '',
             cardId,
-            cardEmoji: cardEmoji || '🎁',
+            cardColor: cardColor || '#ccc',
             cardName,
             amount: parsedAmount,
             message: message?.trim() || '',

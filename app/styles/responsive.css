@@ -1,0 +1,43 @@
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .connections-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: 10px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .nav-tabs {
+    display: none;
+  }
+
+  .topnav {
+    padding: 0 14px;
+  }
+}

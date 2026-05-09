@@ -1,0 +1,223 @@
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.07;
+}
+
+.stat-card.gold::after  { background: #e8a020; }
+.stat-card.green::after { background: #0d9e4e; }
+.stat-card.red::after   { background: #cc3e3e; }
+.stat-card.blue::after  { background: #3d6ff0; }
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 7px;
+}
+
+.stat-val {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-card.gold  .stat-val { color: var(--gold);  }
+.stat-card.green .stat-val { color: var(--green); }
+.stat-card.red   .stat-val { color: var(--red);   }
+.stat-card.blue  .stat-val { color: var(--blue);  }
+
+.stat-sub {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 3px;
+}
+
+/* ── Wallet / Balance card ── */
+
+.dash-card {
+  background: linear-gradient(135deg, #0c1426, #1a2e4a 55%, #0e3d50);
+  border: none;
+  border-radius: 18px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 12px 36px rgba(12, 20, 38, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.dash-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent);
+  pointer-events: none;
+}
+
+.dash-card-chip {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  width: 52px;
+  height: 42px;
+  background: linear-gradient(135deg, #fcd34d, #f59e0b);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 5px 14px rgba(252, 211, 77, 0.3);
+}
+
+.dash-card-balance-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dash-card-balance {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.dash-card-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: auto;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.dash-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.dash-card-name {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.dash-card-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+}
+
+/* ── Activity feed ── */
+
+.activity-item {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 5px;
+  transition: border-color 0.2s;
+}
+
+.activity-item:hover {
+  border-color: var(--border2);
+}
+
+.activity-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: var(--surface3);
+}
+
+.activity-name {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.activity-desc {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.activity-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: right;
+}
+
+.activity-time {
+  font-size: 9px;
+  color: var(--text3);
+  text-align: right;
+  margin-top: 1px;
+}
+
+/* ── Two-column dashboard grid ── */
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 270px;
+  gap: 14px;
+  margin-bottom: 18px;
+}

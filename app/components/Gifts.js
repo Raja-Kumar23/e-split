@@ -10,14 +10,14 @@ import { fetchGifts, sendGiftApi } from '../lib/api';
 import { fmt, fmtDate, round2 } from '../lib/calculations';
 
 const GIFT_CARDS = [
-  { id: 'birthday', emoji: '', name: 'Birthday Card' },
-  { id: 'coffee',   emoji: '', name: 'Coffee Gift' },
-  { id: 'food',     emoji: '', name: 'Food Treat' },
-  { id: 'movie',    emoji: '', name: 'Movie Night' },
-  { id: 'shopping', emoji: '️', name: 'Shopping Card' },
-  { id: 'travel',   emoji: '️', name: 'Travel Voucher' },
-  { id: 'gaming',   emoji: '', name: 'Gaming Gift' },
-  { id: 'flower',   emoji: '', name: 'Flower Bouquet' },
+  { id: 'birthday', name: 'Birthday Card',   emoji: '🎂', color: '#ff6b6b' },
+  { id: 'coffee',   name: 'Coffee Gift',     emoji: '☕', color: '#a0522d' },
+  { id: 'food',     name: 'Food Treat',      emoji: '🍕', color: '#ff8c00' },
+  { id: 'movie',    name: 'Movie Night',     emoji: '🎬', color: '#9932cc' },
+  { id: 'shopping', name: 'Shopping Card',   emoji: '🛍️', color: '#e91e8c' },
+  { id: 'travel',   name: 'Travel Voucher',  emoji: '✈️', color: '#00adb5' },
+  { id: 'gaming',   name: 'Gaming Gift',     emoji: '🎮', color: '#22c55e' },
+  { id: 'flower',   name: 'Flower Bouquet',  emoji: '💐', color: '#f06292' },
 ];
 
 export default function Gifts({ allConnections }) {
@@ -46,13 +46,13 @@ export default function Gifts({ allConnections }) {
         to:        giftTo,
         amount,
         cardId:    selected.id,
-        cardEmoji: selected.emoji,
+        cardColor: selected.color,
         cardName:  selected.name,
         message:   giftMsg,
       });
       setUserData(d => ({ ...d, balance: res.senderNewBalance }));
       setGiftAmount(''); setGiftMsg('');
-      showToast(`${selected.emoji} Gift sent to ${allConnections[giftTo]?.name}! `, 'success');
+      showToast(`${selected.name} sent to ${allConnections[giftTo]?.name}! `, 'success');
       const updated = await fetchGifts(currentUser.uid);
       setHistory(updated);
     } catch (e) {
@@ -71,19 +71,22 @@ export default function Gifts({ allConnections }) {
           <div className="section-title" style={{ marginBottom: 3 }}> Send a Gift Card</div>
           <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 14 }}>Choose a card, set amount, add a message</div>
 
-          <div className="fgrp">
-            <label>Choose Gift Card</label>
             <div className="gift-cards-grid">
               {GIFT_CARDS.map(gc => (
                 <div key={gc.id}
                   className={`gift-card-opt${selected.id === gc.id ? ' selected' : ''}`}
-                  onClick={() => setSelected(gc)}>
-                  <div className="gift-card-emoji">{gc.emoji}</div>
+                  onClick={() => setSelected(gc)}
+                  style={{
+                    borderColor: selected.id === gc.id ? gc.color : undefined,
+                    background:  selected.id === gc.id ? `${gc.color}18` : undefined,
+                  }}>
+                  <div className="gift-card-icon" style={{ backgroundColor: gc.color }}>
+                    {gc.emoji}
+                  </div>
                   <div className="gift-card-name">{gc.name}</div>
                 </div>
               ))}
             </div>
-          </div>
 
           <div className="fgrp">
             <label>Send To</label>
@@ -124,7 +127,9 @@ export default function Gifts({ allConnections }) {
               const isSent = g.from === currentUser?.uid;
               return (
                 <div key={i} className="gift-history-item">
-                  <div style={{ fontSize: 22 }}>{g.cardEmoji}</div>
+                  <div className="gift-history-icon" style={{ backgroundColor: g.cardColor || '#ccc' }}>
+                    {GIFT_CARDS.find(c => c.id === g.cardId)?.emoji || '🎁'}
+                  </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--text)' }}>{g.cardName}</div>
                     <div style={{ fontSize: 9, color: 'var(--text3)', marginTop: 1 }}>
@@ -147,8 +152,10 @@ export default function Gifts({ allConnections }) {
 
       {/* live preview */}
       <div className="gift-preview">
-        <div className="gift-preview-orb" />
-        <div className="gift-preview-emoji">{selected.emoji}</div>
+        <div className="gift-preview-orb" style={{ background: `radial-gradient(circle, ${selected.color}40, transparent 60%)` }} />
+        <div className="gift-preview-icon" style={{ backgroundColor: selected.color }}>
+          {selected.emoji}
+        </div>
         <div className="gift-preview-name">{selected.name}</div>
         <div className="gift-preview-amount">{fmt(parseFloat(giftAmount) || 0)}</div>
         <div className="gift-preview-to">To: {toUser ? toUser.name : '—'}</div>

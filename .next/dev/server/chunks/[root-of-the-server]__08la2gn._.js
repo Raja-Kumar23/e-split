@@ -50,9 +50,10 @@ __turbopack_context__.s([
     "dbUpdate",
     ()=>dbUpdate
 ]);
-// Server-side Firebase Database access via REST API
-// Used by all API routes — no client SDK on the server
-const DB_URL = 'https://kslcaptain-default-rtdb.firebaseio.com';
+/**
+ * Minimal Firebase admin module for server-side usage.
+ * Uses REST API to interface with the database.
+ */ const DB_URL = ("TURBOPACK compile-time value", "https://kslcaptain-default-rtdb.firebaseio.com");
 async function dbGet(path) {
     const res = await fetch(`${DB_URL}/${path}.json`);
     if (!res.ok) throw new Error(`DB GET failed: ${path} ${res.status}`);
@@ -78,7 +79,7 @@ async function dbPush(path, data) {
         body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error(`DB PUSH failed: ${path} ${res.status}`);
-    return res.json(); // returns { name: "-NEWKEY" }
+    return res.json();
 }
 async function dbUpdate(path, data) {
     const res = await fetch(`${DB_URL}/${path}.json`, {
@@ -155,9 +156,8 @@ __turbopack_context__.s([
     ()=>POST
 ]);
 /**
- * /api/groups
- * GET  ?uid=xxx          → return all groups where uid is a member
- * POST { name, desc, members: {uid: {name,email,username}}, createdBy } → create group
+ * Controller for group-related operations.
+ * Handles fetching groups for a user and creating new expense-sharing groups.
  */ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/firebaseAdmin.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/apiHelpers.js [app-route] (ecmascript)");
 ;
@@ -169,6 +169,7 @@ async function GET(request) {
         if (!uid) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('uid required', 400);
         const allGroups = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])('groups');
         if (!allGroups) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["ok"])({});
+        // Get only the groups where user is a member
         const myGroups = {};
         for (const [gid, g] of Object.entries(allGroups)){
             if (g.members && g.members[uid]) {
@@ -186,6 +187,7 @@ async function POST(request) {
         const { name, desc, members, createdBy } = body;
         if (!name || !name.trim()) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Group name is required');
         if (!createdBy) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('createdBy is required');
+        // Creator must be a member of the group
         if (!members || !members[createdBy]) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Creator must be in members');
         const newGroup = {
             name: name.trim(),

@@ -50,9 +50,10 @@ __turbopack_context__.s([
     "dbUpdate",
     ()=>dbUpdate
 ]);
-// Server-side Firebase Database access via REST API
-// Used by all API routes — no client SDK on the server
-const DB_URL = 'https://kslcaptain-default-rtdb.firebaseio.com';
+/**
+ * Minimal Firebase admin module for server-side usage.
+ * Uses REST API to interface with the database.
+ */ const DB_URL = ("TURBOPACK compile-time value", "https://kslcaptain-default-rtdb.firebaseio.com");
 async function dbGet(path) {
     const res = await fetch(`${DB_URL}/${path}.json`);
     if (!res.ok) throw new Error(`DB GET failed: ${path} ${res.status}`);
@@ -78,7 +79,7 @@ async function dbPush(path, data) {
         body: JSON.stringify(data)
     });
     if (!res.ok) throw new Error(`DB PUSH failed: ${path} ${res.status}`);
-    return res.json(); // returns { name: "-NEWKEY" }
+    return res.json();
 }
 async function dbUpdate(path, data) {
     const res = await fetch(`${DB_URL}/${path}.json`, {
@@ -104,16 +105,9 @@ async function dbDelete(path) {
 "use strict";
 
 /**
- * E-Split Calculation Engine
- * All money math is centralised here. Used on both server (API routes)
- * and client (display components).
- *
- * PRINCIPLE
- *  - Every expense has a payer (paidBy) and a list of participants (splitWith).
- *  - The payer fronted the full amount; each participant (including the payer)
- *    owes their equal share.
- *  - Net balance: POSITIVE = others owe you | NEGATIVE = you owe others
- *  - Payments recorded in the `payments` node reduce outstanding balances.
+ * Core Financial Calculation Engine.
+ * Manages expense splitting, balance computation, and settlement algorithms.
+ * Used consistently across server routes and client components.
  */ __turbopack_context__.s([
     "AVATAR_COLORS",
     ()=>AVATAR_COLORS,
@@ -165,11 +159,7 @@ const generateUsername = (name)=>{
     const clean = (name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '');
     return (clean.slice(0, 8) || 'user') + Math.floor(100 + Math.random() * 900);
 };
-// ─── core balance calculations ──────────────────────────────────────────────
-/**
- * Resolve the participant list for one expense.
- * Falls back to all group members when splitWith is empty/missing.
- */ function resolveParticipants(exp, allMemberUids) {
+function resolveParticipants(exp, allMemberUids) {
     if (Array.isArray(exp.splitWith) && exp.splitWith.length > 0) {
         return exp.splitWith;
     }
@@ -178,26 +168,24 @@ const generateUsername = (name)=>{
 function computeRawBalances(group) {
     const memberUids = Object.keys(group.members || {});
     const bals = {};
+    // Set initial balance to zero
     memberUids.forEach((m)=>{
         bals[m] = 0;
     });
-    // ── Expenses ──
     for (const exp of Object.values(group.expenses || {})){
         if (!bals.hasOwnProperty(exp.paidBy)) continue;
         const sw = resolveParticipants(exp, memberUids);
         if (sw.length === 0) continue;
+        // Calculate share for each person
         const share = round2(exp.amount / sw.length);
-        // Payer gets credited for every OTHER participant's share
         const otherCount = sw.filter((m)=>m !== exp.paidBy).length;
         bals[exp.paidBy] = round2(bals[exp.paidBy] + otherCount * share);
-        // Each non-payer participant is debited their share
         for (const mid of sw){
             if (mid !== exp.paidBy && bals.hasOwnProperty(mid)) {
                 bals[mid] = round2(bals[mid] - share);
             }
         }
     }
-    // ── Payments (settlements already made) ──
     for (const pay of Object.values(group.payments || {})){
         if (bals.hasOwnProperty(pay.from)) bals[pay.from] = round2(bals[pay.from] - pay.amount);
         if (bals.hasOwnProperty(pay.to)) bals[pay.to] = round2(bals[pay.to] + pay.amount);
@@ -218,13 +206,11 @@ function getMyDebts(group, uid) {
         const share = round2(exp.amount / sw.length);
         owed[exp.paidBy] = round2((owed[exp.paidBy] || 0) + share);
     }
-    // Subtract payments I've already made
     for (const pay of Object.values(group.payments || {})){
         if (pay.from === uid && pay.to) {
             owed[pay.to] = round2((owed[pay.to] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding debts
     const result = {};
     for (const [creditor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[creditor] = round2(amt);
@@ -245,13 +231,11 @@ function getMyCredits(group, uid) {
             }
         }
     }
-    // Subtract payments already received
     for (const pay of Object.values(group.payments || {})){
         if (pay.to === uid && pay.from) {
             owed[pay.from] = round2((owed[pay.from] || 0) - pay.amount);
         }
     }
-    // Return only positive outstanding credits
     const result = {};
     for (const [debtor, amt] of Object.entries(owed)){
         if (amt > 0.005) result[debtor] = round2(amt);
@@ -259,9 +243,10 @@ function getMyCredits(group, uid) {
     return result;
 }
 function computeSettlementPlan(group) {
+    // Calculate minimum settlement transactions
     const bals = computeRawBalances(group);
-    const creditors = []; // uid owes money to others  (balance > 0)
-    const debtors = []; // uid is owed money by others(balance < 0)
+    const creditors = []; // Users who are owed money
+    const debtors = []; // Users who owe money
     for (const [uid, bal] of Object.entries(bals)){
         if (bal > 0.005) creditors.push({
             uid,
@@ -364,10 +349,8 @@ __turbopack_context__.s([
     ()=>POST
 ]);
 /**
- * /api/groups/[groupId]/expenses
- * POST → add expense, deduct payer's full amount from wallet, track totalSpent
- *
- * Body: { desc, amount, paidBy, splitWith?, isDirectPayment?, paymentMethod?, paymentDetail? }
+ * API route for adding and retrieving group expenses.
+ * Handles validation, splitting logic, and updates to the payer's wallet balance.
  */ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/firebaseAdmin.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/calculations.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/lib/apiHelpers.js [app-route] (ecmascript)");
@@ -380,7 +363,6 @@ async function GET(request, { params }) {
         const group = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])(`groups/${groupId}`);
         if (!group) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Group not found', 404);
         const expenses = group.expenses || {};
-        // Sort newest first
         const sorted = Object.entries(expenses).map(([id, e])=>({
                 id,
                 ...e
@@ -395,7 +377,7 @@ async function POST(request, { params }) {
         const { groupId } = await params;
         const body = await request.json();
         const { desc, amount, paidBy, splitWith, isDirectPayment, paymentMethod, paymentDetail } = body;
-        // ── Validation ──
+        // Validate input data
         if (!desc || !desc.trim()) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Description is required');
         if (!amount || isNaN(amount) || amount <= 0) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Amount must be a positive number');
         if (!paidBy) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('paidBy is required');
@@ -404,19 +386,17 @@ async function POST(request, { params }) {
         if (!group.members?.[paidBy]) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Payer is not a member of this group', 403);
         const memberUids = Object.keys(group.members);
         const participants = Array.isArray(splitWith) && splitWith.length > 0 ? splitWith : memberUids;
-        // Validate all participants are group members
         for (const uid of participants){
             if (!group.members[uid]) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])(`User ${uid} is not a group member`);
         }
         const parsedAmount = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])(parseFloat(amount));
         const perPerson = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])(parsedAmount / participants.length);
-        // ── Check payer wallet balance ──
         const payerData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbGet"])(`users/${paidBy}`);
         if (!payerData) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])('Payer not found', 404);
+        // Check user balance
         if ((payerData.balance || 0) < parsedAmount) {
             return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$apiHelpers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["err"])(`Insufficient balance. Have ${payerData.balance?.toFixed(2)}, need ${parsedAmount.toFixed(2)}`);
         }
-        // ── Write expense ──
         const expense = {
             desc: desc.trim(),
             amount: parsedAmount,
@@ -429,10 +409,8 @@ async function POST(request, { params }) {
             createdAt: Date.now()
         };
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbPush"])(`groups/${groupId}/expenses`, expense);
-        // ── Deduct FULL amount from payer's wallet ──
-        // payer fronted 100% of the money upfront
+        // Deduct amount from user balance
         const newBalance = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])((payerData.balance || 0) - parsedAmount);
-        // Only payer's own share counts toward totalSpent
         const newTotalSpent = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["round2"])((payerData.totalSpent || 0) + perPerson);
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$firebaseAdmin$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["dbUpdate"])(`users/${paidBy}`, {
             balance: newBalance,

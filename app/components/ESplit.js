@@ -55,7 +55,16 @@ export default function ESplit({ allGroups, allConnections, showNewGroup, onNewG
     // Check if group name is empty
     if (!ngName.trim()) { showToast('Group name is required', 'error'); return; }
 
-    // Add creator to group members
+    // Initialise the members map and always include the creator
+    const members = {
+      [uid]: {
+        name: userData?.name || currentUser?.displayName || '',
+        email: currentUser?.email || '',
+        username: userData?.username || '',
+      },
+    };
+
+    // Add every selected connection to the group
     Object.entries(ngSelected).forEach(([connUid, checked]) => {
       if (checked && allConnections[connUid]) {
         members[connUid] = {

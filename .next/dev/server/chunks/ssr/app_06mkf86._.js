@@ -2187,7 +2187,15 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
             showToast('Group name is required', 'error');
             return;
         }
-        // Add creator to group members
+        // Initialise the members map and always include the creator
+        const members = {
+            [uid]: {
+                name: userData?.name || currentUser?.displayName || '',
+                email: currentUser?.email || '',
+                username: userData?.username || ''
+            }
+        };
+        // Add every selected connection to the group
         Object.entries(ngSelected).forEach(([connUid, checked])=>{
             if (checked && allConnections[connUid]) {
                 members[connUid] = {
@@ -2399,7 +2407,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                         children: "My E-Splits"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 207,
+                        lineNumber: 216,
                         columnNumber: 9
                     }, this),
                     !Object.keys(allGroups).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2409,7 +2417,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 className: "empty-icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 209,
+                                lineNumber: 218,
                                 columnNumber: 34
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2417,13 +2425,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "No E-Splits yet"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 209,
+                                lineNumber: 218,
                                 columnNumber: 68
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 209,
+                        lineNumber: 218,
                         columnNumber: 11
                     }, this) : Object.entries(allGroups).map(([gid, grp])=>{
                         const mc = Object.keys(grp.members || {}).length;
@@ -2434,7 +2442,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             children: "Settled"
                         }, void 0, false, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 215,
+                            lineNumber: 224,
                             columnNumber: 47
                         }, this);
                         else if (bal < 0) badge = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2445,7 +2453,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 216,
+                            lineNumber: 225,
                             columnNumber: 39
                         }, this);
                         else badge = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2456,7 +2464,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 217,
+                            lineNumber: 226,
                             columnNumber: 26
                         }, this);
                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2473,7 +2481,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: grp.name
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 224,
+                                    lineNumber: 233,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2487,20 +2495,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 225,
+                                            lineNumber: 234,
                                             columnNumber: 45
                                         }, this),
                                         badge
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 225,
+                                    lineNumber: 234,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, gid, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 219,
+                            lineNumber: 228,
                             columnNumber: 15
                         }, this);
                     }),
@@ -2517,13 +2525,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                         children: "+ New E-Split"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 230,
+                        lineNumber: 239,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 206,
+                lineNumber: 215,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2539,7 +2547,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 className: "empty-icon"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 242,
+                                lineNumber: 251,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2552,7 +2560,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "Select an E-Split"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 243,
+                                lineNumber: 252,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2563,13 +2571,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "Choose a group or create a new one"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 244,
+                                lineNumber: 253,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 241,
+                        lineNumber: 250,
                         columnNumber: 11
                     }, this),
                     panel === 'new' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2584,7 +2592,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Create New E-Split"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 252,
+                                        lineNumber: 261,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2592,13 +2600,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Only your connections can be added as members"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 253,
+                                        lineNumber: 262,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 251,
+                                lineNumber: 260,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2608,7 +2616,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Split Name"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 256,
+                                        lineNumber: 265,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2618,13 +2626,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         placeholder: "e.g. Road Trip, House Rent…"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 257,
+                                        lineNumber: 266,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 255,
+                                lineNumber: 264,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2634,7 +2642,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Description (optional)"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 260,
+                                        lineNumber: 269,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2644,13 +2652,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         placeholder: "What is this for?"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 261,
+                                        lineNumber: 270,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 259,
+                                lineNumber: 268,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2660,7 +2668,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Add Members from Connections"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 264,
+                                        lineNumber: 273,
                                         columnNumber: 15
                                     }, this),
                                     !Object.keys(allConnections).length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2672,7 +2680,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "No connections yet — go to People tab to add friends."
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 266,
+                                        lineNumber: 275,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -2690,18 +2698,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: u.name || u.username || connUid
                                             }, connUid, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 272,
+                                                lineNumber: 281,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 270,
+                                        lineNumber: 279,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 263,
+                                lineNumber: 272,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2714,7 +2722,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: loading ? 'Creating…' : 'Create E-Split'
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 284,
+                                        lineNumber: 293,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2723,19 +2731,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 287,
+                                        lineNumber: 296,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 283,
+                                lineNumber: 292,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 250,
+                        lineNumber: 259,
                         columnNumber: 11
                     }, this),
                     panel === 'detail' && g && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2757,7 +2765,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: g.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 298,
+                                                lineNumber: 307,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2769,13 +2777,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 299,
+                                                lineNumber: 308,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 297,
+                                        lineNumber: 306,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2791,7 +2799,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "+ Expense"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 302,
+                                                lineNumber: 311,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2800,7 +2808,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Record Payment"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 303,
+                                                lineNumber: 312,
                                                 columnNumber: 17
                                             }, this),
                                             myBal < -0.01 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2810,7 +2818,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Settle All"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 305,
+                                                lineNumber: 314,
                                                 columnNumber: 19
                                             }, this),
                                             myBal > 0.01 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2819,19 +2827,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Remind"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 310,
+                                                lineNumber: 319,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 301,
+                                        lineNumber: 310,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 296,
+                                lineNumber: 305,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2842,7 +2850,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: Math.abs(myBal) < 0.01 ? '' : myBal > 0 ? '' : ''
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 320,
+                                        lineNumber: 329,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2853,7 +2861,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: Math.abs(myBal) < 0.01 ? 'All settled up!' : myBal > 0 ? `You are owed ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(myBal)}` : `You owe ${(0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(-myBal)}`
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 322,
+                                                lineNumber: 331,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2861,19 +2869,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: Math.abs(myBal) < 0.01 ? 'Everyone has paid their share' : myBal > 0 ? 'Friends still need to pay you back' : 'Use Settle All to clear your debt instantly'
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 329,
+                                                lineNumber: 338,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 321,
+                                        lineNumber: 330,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 319,
+                                lineNumber: 328,
                                 columnNumber: 13
                             }, this),
                             showExpForm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2886,7 +2894,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Add Expense — I Paid"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 343,
+                                                lineNumber: 352,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2894,13 +2902,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 onClick: ()=>setShowExpForm(false)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 344,
+                                                lineNumber: 353,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 342,
+                                        lineNumber: 351,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2920,14 +2928,14 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "you paid"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 347,
+                                                lineNumber: 356,
                                                 columnNumber: 33
                                             }, this),
                                             " for something and want to split the cost equally."
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 346,
+                                        lineNumber: 355,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2940,7 +2948,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Description"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 351,
+                                                        lineNumber: 360,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2950,13 +2958,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         placeholder: "e.g. Hotel, Dinner, Fuel…"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 352,
+                                                        lineNumber: 361,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 350,
+                                                lineNumber: 359,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2966,7 +2974,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Total Amount (NPR)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 355,
+                                                        lineNumber: 364,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2978,19 +2986,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         step: "0.01"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 356,
+                                                        lineNumber: 365,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 354,
+                                                lineNumber: 363,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 349,
+                                        lineNumber: 358,
                                         columnNumber: 17
                                     }, this),
                                     parseFloat(expAmount) > 0 && memberUids.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3005,7 +3013,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 361,
+                                                lineNumber: 370,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3013,13 +3021,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(perPersonPreview)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 362,
+                                                lineNumber: 371,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 360,
+                                        lineNumber: 369,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3035,7 +3043,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: loading ? 'Adding…' : 'Add Expense'
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 366,
+                                                lineNumber: 375,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3044,19 +3052,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Cancel"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 369,
+                                                lineNumber: 378,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 365,
+                                        lineNumber: 374,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 341,
+                                lineNumber: 350,
                                 columnNumber: 15
                             }, this),
                             (Object.keys(myCredits).length > 0 || Object.keys(myDebts).length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3095,7 +3103,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: "Friends Owe You"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 382,
+                                                                lineNumber: 391,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3108,13 +3116,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(Object.values(myCredits).reduce((a, b)=>a + b, 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 383,
+                                                                lineNumber: 392,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 381,
+                                                        lineNumber: 390,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3128,13 +3136,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Remind All"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 387,
+                                                        lineNumber: 396,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 380,
+                                                lineNumber: 389,
                                                 columnNumber: 21
                                             }, this),
                                             Object.entries(myCredits).map(([debtorUid, amount])=>{
@@ -3159,7 +3167,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 394,
+                                                            lineNumber: 403,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3173,7 +3181,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 398,
+                                                                    lineNumber: 407,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3184,13 +3192,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 399,
+                                                                    lineNumber: 408,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 397,
+                                                            lineNumber: 406,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3198,20 +3206,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 401,
+                                                            lineNumber: 410,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, debtorUid, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 393,
+                                                    lineNumber: 402,
                                                     columnNumber: 25
                                                 }, this);
                                             })
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 379,
+                                        lineNumber: 388,
                                         columnNumber: 19
                                     }, this),
                                     Object.keys(myDebts).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3245,7 +3253,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: "You Owe"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 413,
+                                                                lineNumber: 422,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3258,13 +3266,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(Object.values(myDebts).reduce((a, b)=>a + b, 0)))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 414,
+                                                                lineNumber: 423,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 412,
+                                                        lineNumber: 421,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3274,13 +3282,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Pay All"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 418,
+                                                        lineNumber: 427,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 411,
+                                                lineNumber: 420,
                                                 columnNumber: 21
                                             }, this),
                                             Object.entries(myDebts).map(([creditorUid, amount])=>{
@@ -3305,7 +3313,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 424,
+                                                            lineNumber: 433,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3319,7 +3327,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 428,
+                                                                    lineNumber: 437,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3330,13 +3338,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/ESplit.js",
-                                                                    lineNumber: 429,
+                                                                    lineNumber: 438,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 427,
+                                                            lineNumber: 436,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3344,7 +3352,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 431,
+                                                            lineNumber: 440,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3354,26 +3362,26 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: "Pay Now"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 432,
+                                                            lineNumber: 441,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, creditorUid, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 423,
+                                                    lineNumber: 432,
                                                     columnNumber: 25
                                                 }, this);
                                             })
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 410,
+                                        lineNumber: 419,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 376,
+                                lineNumber: 385,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3384,7 +3392,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 children: "Members"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 444,
+                                lineNumber: 453,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3400,14 +3408,14 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(m.name)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 448,
+                                                lineNumber: 457,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: m.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 449,
+                                                lineNumber: 458,
                                                 columnNumber: 19
                                             }, this),
                                             mid === uid && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3418,23 +3426,23 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "You"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 450,
+                                                lineNumber: 459,
                                                 columnNumber: 35
                                             }, this)
                                         ]
                                     }, mid, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 447,
+                                        lineNumber: 456,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 445,
+                                lineNumber: 454,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 454,
+                                lineNumber: 463,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3450,12 +3458,12 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: t.charAt(0).toUpperCase() + t.slice(1)
                                     }, t, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 459,
+                                        lineNumber: 468,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 457,
+                                lineNumber: 466,
                                 columnNumber: 13
                             }, this),
                             groupTab === 'balances' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3468,7 +3476,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "Your Net Position in This Split"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 469,
+                                                lineNumber: 478,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3481,7 +3489,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Friends owe you"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 471,
+                                                        lineNumber: 480,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3496,13 +3504,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 472,
+                                                        lineNumber: 481,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 470,
+                                                lineNumber: 479,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3515,7 +3523,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "You owe others"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 477,
+                                                        lineNumber: 486,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3530,13 +3538,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 478,
+                                                        lineNumber: 487,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 476,
+                                                lineNumber: 485,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3553,7 +3561,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: "Net Balance"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 483,
+                                                        lineNumber: 492,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3568,19 +3576,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 484,
+                                                        lineNumber: 493,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 482,
+                                                lineNumber: 491,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 468,
+                                        lineNumber: 477,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3595,7 +3603,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                         children: "Minimum Settlement Plan — Who Pays Whom"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 490,
+                                        lineNumber: 499,
                                         columnNumber: 17
                                     }, this),
                                     !plan.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3605,7 +3613,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 className: "empty-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 494,
+                                                lineNumber: 503,
                                                 columnNumber: 42
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3613,13 +3621,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "All balances are zero — fully settled!"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 494,
+                                                lineNumber: 503,
                                                 columnNumber: 76
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 494,
+                                        lineNumber: 503,
                                         columnNumber: 19
                                     }, this) : plan.map((o, i)=>{
                                         const fn = (g.members[o.from] || {}).name || o.from;
@@ -3638,7 +3646,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: isFrom ? ' You' : fn
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 503,
+                                                    lineNumber: 512,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3649,7 +3657,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: "→"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 504,
+                                                    lineNumber: 513,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3661,7 +3669,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: isTo ? ' You' : tn
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 505,
+                                                    lineNumber: 514,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3669,7 +3677,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(o.amount)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 506,
+                                                    lineNumber: 515,
                                                     columnNumber: 25
                                                 }, this),
                                                 isFrom && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3679,20 +3687,20 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     children: "Settle"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 508,
+                                                    lineNumber: 517,
                                                     columnNumber: 27
                                                 }, this)
                                             ]
                                         }, i, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 502,
+                                            lineNumber: 511,
                                             columnNumber: 23
                                         }, this);
                                     })
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 467,
+                                lineNumber: 476,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'expenses' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3703,7 +3711,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             className: "empty-icon"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 523,
+                                            lineNumber: 532,
                                             columnNumber: 42
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3711,13 +3719,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "No expenses yet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 523,
+                                            lineNumber: 532,
                                             columnNumber: 76
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 523,
+                                    lineNumber: 532,
                                     columnNumber: 19
                                 }, this) : Object.values(g.expenses || {}).sort((a, b)=>b.createdAt - a.createdAt).map((e, i)=>{
                                     const pn = (g.members[e.paidBy] || {}).name || e.paidBy;
@@ -3742,7 +3750,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: e.desc
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 537,
+                                                                lineNumber: 546,
                                                                 columnNumber: 31
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3754,13 +3762,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 538,
+                                                                lineNumber: 547,
                                                                 columnNumber: 31
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 536,
+                                                        lineNumber: 545,
                                                         columnNumber: 29
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3770,7 +3778,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(e.amount)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 546,
+                                                                lineNumber: 555,
                                                                 columnNumber: 31
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3783,19 +3791,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 547,
+                                                                lineNumber: 556,
                                                                 columnNumber: 31
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 545,
+                                                        lineNumber: 554,
                                                         columnNumber: 29
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 535,
+                                                lineNumber: 544,
                                                 columnNumber: 27
                                             }, this),
                                             isMe && sw.filter((m)=>m !== uid).length > 0 && !isDirect && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3815,7 +3823,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: " Collecting from:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 552,
+                                                        lineNumber: 561,
                                                         columnNumber: 31
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3856,7 +3864,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getInitials"])(name)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/components/ESplit.js",
-                                                                        lineNumber: 558,
+                                                                        lineNumber: 567,
                                                                         columnNumber: 39
                                                                     }, this),
                                                                     name,
@@ -3865,19 +3873,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, j, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 557,
+                                                                lineNumber: 566,
                                                                 columnNumber: 37
                                                             }, this);
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 553,
+                                                        lineNumber: 562,
                                                         columnNumber: 31
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 551,
+                                                lineNumber: 560,
                                                 columnNumber: 29
                                             }, this),
                                             !isMe && sw.includes(uid) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3893,19 +3901,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 569,
+                                                lineNumber: 578,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, i, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 534,
+                                        lineNumber: 543,
                                         columnNumber: 25
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 521,
+                                lineNumber: 530,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'payments' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3916,7 +3924,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             className: "empty-icon"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 584,
+                                            lineNumber: 593,
                                             columnNumber: 42
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3924,13 +3932,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "No payments recorded yet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 584,
+                                            lineNumber: 593,
                                             columnNumber: 76
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 584,
+                                    lineNumber: 593,
                                     columnNumber: 19
                                 }, this) : Object.values(g.payments || {}).sort((a, b)=>b.createdAt - a.createdAt).map((p, i)=>{
                                     const fn = (g.members[p.from] || {}).name || '?';
@@ -3944,7 +3952,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 className: "activity-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 595,
+                                                lineNumber: 604,
                                                 columnNumber: 27
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3958,7 +3966,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 597,
+                                                        lineNumber: 606,
                                                         columnNumber: 29
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3970,13 +3978,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 598,
+                                                        lineNumber: 607,
                                                         columnNumber: 29
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 596,
+                                                lineNumber: 605,
                                                 columnNumber: 27
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3988,24 +3996,24 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/ESplit.js",
-                                                    lineNumber: 601,
+                                                    lineNumber: 610,
                                                     columnNumber: 29
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 600,
+                                                lineNumber: 609,
                                                 columnNumber: 27
                                             }, this)
                                         ]
                                     }, i, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 594,
+                                        lineNumber: 603,
                                         columnNumber: 25
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 582,
+                                lineNumber: 591,
                                 columnNumber: 15
                             }, this),
                             groupTab === 'activity' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4027,7 +4035,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 className: "empty-icon"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 620,
+                                                lineNumber: 629,
                                                 columnNumber: 67
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4035,13 +4043,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                 children: "No activity yet"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 620,
+                                                lineNumber: 629,
                                                 columnNumber: 101
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/ESplit.js",
-                                        lineNumber: 620,
+                                        lineNumber: 629,
                                         columnNumber: 44
                                     }, this);
                                     return acts.map((act, i)=>{
@@ -4057,7 +4065,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         children: act.isDirectPayment ? '' : ''
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 628,
+                                                        lineNumber: 637,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4071,7 +4079,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 630,
+                                                                lineNumber: 639,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4085,13 +4093,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 631,
+                                                                lineNumber: 640,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 629,
+                                                        lineNumber: 638,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4100,18 +4108,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])(act.amount)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 633,
+                                                            lineNumber: 642,
                                                             columnNumber: 32
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 633,
+                                                        lineNumber: 642,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 627,
+                                                lineNumber: 636,
                                                 columnNumber: 25
                                             }, this);
                                         } else {
@@ -4126,7 +4134,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                         className: "activity-icon"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 643,
+                                                        lineNumber: 652,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4140,7 +4148,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 645,
+                                                                lineNumber: 654,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4152,13 +4160,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/ESplit.js",
-                                                                lineNumber: 646,
+                                                                lineNumber: 655,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 644,
+                                                        lineNumber: 653,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4170,18 +4178,18 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/ESplit.js",
-                                                            lineNumber: 649,
+                                                            lineNumber: 658,
                                                             columnNumber: 29
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/ESplit.js",
-                                                        lineNumber: 648,
+                                                        lineNumber: 657,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, i, true, {
                                                 fileName: "[project]/app/components/ESplit.js",
-                                                lineNumber: 642,
+                                                lineNumber: 651,
                                                 columnNumber: 25
                                             }, this);
                                         }
@@ -4189,19 +4197,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                 })()
                             }, void 0, false, {
                                 fileName: "[project]/app/components/ESplit.js",
-                                lineNumber: 614,
+                                lineNumber: 623,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/ESplit.js",
-                        lineNumber: 294,
+                        lineNumber: 303,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 237,
+                lineNumber: 246,
                 columnNumber: 7
             }, this),
             showDirPay && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4222,7 +4230,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Record a Trip Payment"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 667,
+                                    lineNumber: 676,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4230,13 +4238,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Log a payment you made on behalf of the group — cost will be split equally"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 668,
+                                    lineNumber: 677,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 666,
+                            lineNumber: 675,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4246,7 +4254,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "What did you pay for? *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 671,
+                                    lineNumber: 680,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4256,13 +4264,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     placeholder: "e.g. Hotel, Lunch, Taxi, Tickets…"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 672,
+                                    lineNumber: 681,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 670,
+                            lineNumber: 679,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4272,7 +4280,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Total Amount (NPR) *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 675,
+                                    lineNumber: 684,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4284,13 +4292,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     step: "0.01"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 676,
+                                    lineNumber: 685,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 674,
+                            lineNumber: 683,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4300,7 +4308,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Payment Method *"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 679,
+                                    lineNumber: 688,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -4312,7 +4320,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "— Select —"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 681,
+                                            lineNumber: 690,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4320,7 +4328,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "eSewa"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 682,
+                                            lineNumber: 691,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4328,7 +4336,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "Bank Transfer"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 683,
+                                            lineNumber: 692,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4336,7 +4344,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "QR Code"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 684,
+                                            lineNumber: 693,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4344,19 +4352,19 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             children: "Cash"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 685,
+                                            lineNumber: 694,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 680,
+                                    lineNumber: 689,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 678,
+                            lineNumber: 687,
                             columnNumber: 13
                         }, this),
                         (dpmMethod === 'esewa' || dpmMethod === 'bank') && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4366,7 +4374,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: dpmMethod === 'esewa' ? 'eSewa Phone Number' : 'Bank Account Number'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 690,
+                                    lineNumber: 699,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -4376,13 +4384,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     placeholder: dpmMethod === 'esewa' ? '98XXXXXXXX' : 'Account number'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 691,
+                                    lineNumber: 700,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 689,
+                            lineNumber: 698,
                             columnNumber: 15
                         }, this),
                         parseFloat(dpmAmount) > 0 && memberUids.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4409,7 +4417,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 697,
+                                    lineNumber: 706,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4434,12 +4442,12 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                             ]
                                         }, muid, true, {
                                             fileName: "[project]/app/components/ESplit.js",
-                                            lineNumber: 702,
+                                            lineNumber: 711,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 700,
+                                    lineNumber: 709,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4451,7 +4459,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Each person pays:"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 707,
+                                    lineNumber: 716,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4464,13 +4472,13 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fmt"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$lib$2f$calculations$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["round2"])(parseFloat(dpmAmount) / memberUids.length))
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 708,
+                                    lineNumber: 717,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 696,
+                            lineNumber: 705,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4491,7 +4499,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 713,
+                            lineNumber: 722,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4507,7 +4515,7 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: loading ? 'Recording…' : 'Record Payment'
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 717,
+                                    lineNumber: 726,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4519,30 +4527,30 @@ function ESplit({ allGroups, allConnections, showNewGroup, onNewGroupDone, onGro
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/ESplit.js",
-                                    lineNumber: 720,
+                                    lineNumber: 729,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/ESplit.js",
-                            lineNumber: 716,
+                            lineNumber: 725,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/ESplit.js",
-                    lineNumber: 665,
+                    lineNumber: 674,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/ESplit.js",
-                lineNumber: 664,
+                lineNumber: 673,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/ESplit.js",
-        lineNumber: 203,
+        lineNumber: 212,
         columnNumber: 5
     }, this);
 }

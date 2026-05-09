@@ -59,6 +59,7 @@ Follow these steps to get the project running on your local machine:
    Install all the required libraries (Next.js, Firebase, etc.) using npm:
    ```bash
    npm install
+   npm install firebase
    ```
 
 4. **Setup Environment Variables:**
